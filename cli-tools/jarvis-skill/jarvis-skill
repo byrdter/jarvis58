@@ -1,0 +1,292 @@
+#!/usr/bin/env python3
+"""
+JARVIS Skill CLI
+
+Create, test, and manage JARVIS skills.
+
+Commands:
+  create <name> --domain <domain>  Create new skill from template
+  test <skill_path>                 Validate skill
+  list                              List available skills
+  refresh                           Refresh skill registry
+"""
+
+import sys
+import os
+import argparse
+from pathlib import Path
+from datetime import datetime
+import subprocess
+
+# Paths
+SCRIPT_DIR = Path(__file__).parent
+JARVIS_ROOT = SCRIPT_DIR.parent.parent
+TEMPLATES_DIR = SCRIPT_DIR / "templates"
+SKILLS_DIR = JARVIS_ROOT / "skills"
+USER_SKILLS_DIR = Path.home() / ".jarvis" / "skills"
+REGISTRY_DIR = JARVIS_ROOT / "ecosystem" / "registry"
+
+
+def kebab_case(text: str) -> str:
+    """Convert text to kebab-case"""
+    import re
+    # Replace spaces and underscores with hyphens
+    text = re.sub(r'[\s_]+', '-', text)
+    # Remove non-alphanumeric except hyphens
+    text = re.sub(r'[^a-z0-9-]', '', text.lower())
+    # Remove multiple consecutive hyphens
+    text = re.sub(r'-+', '-', text)
+    # Remove leading/trailing hyphens
+    text = text.strip('-')
+    return text
+
+
+def title_case(text: str) -> str:
+    """Convert kebab-case to Title Case"""
+    return ' '.join(word.capitalize() for word in text.split('-'))
+
+
+def create_skill(name: str, domain: str, location: str = "workspace", description: str = None):
+    """Create new skill from template"""
+
+    # Convert name to kebab-case
+    skill_name = kebab_case(name)
+    skill_display_name = title_case(skill_name)
+
+    # Determine skill directory
+    if location == "workspace":
+        skill_dir = SKILLS_DIR / skill_name
+    elif location == "user":
+        skill_dir = USER_SKILLS_DIR / skill_name
+    else:
+        print(f"❌ Error: Invalid location: {location}")
+        sys.exit(1)
+
+    # Check if skill already exists
+    if skill_dir.exists():
+        print(f"❌ Error: Skill already exists: {skill_dir}")
+        sys.exit(1)
+
+    # Create skill directory
+    skill_dir.mkdir(parents=True, exist_ok=True)
+
+    # Default description
+    if not description:
+        description = f"A JARVIS skill for {domain} domain"
+
+    # Template variables
+    variables = {
+        "SKILL_NAME": skill_name,
+        "SKILL_DISPLAY_NAME": skill_display_name,
+        "SKILL_DESCRIPTION": description,
+        "DOMAIN": domain,
+        "DATE": datetime.now().strftime("%Y-%m-%d")
+    }
+
+    # Process templates
+    templates = [
+        ("SKILL.md.template", "SKILL.md"),
+        ("design-requirements.md.template", "design-requirements.md"),
+        ("README.md.template", "README.md")
+    ]
+
+    for template_name, output_name in templates:
+        template_path = TEMPLATES_DIR / template_name
+        output_path = skill_dir / output_name
+
+        # Read template
+        with open(template_path, 'r') as f:
+            content = f.read()
+
+        # Replace variables
+        for key, value in variables.items():
+            content = content.replace(f"{{{{{key}}}}}", value)
+
+        # Write output
+        with open(output_path, 'w') as f:
+            f.write(content)
+
+        print(f"✓ Created: {output_name}")
+
+    # Create optional run.py wrapper
+    run_py = skill_dir / "run.py"
+    with open(run_py, 'w') as f:
+        f.write(f'''#!/usr/bin/env python3
+"""
+{skill_display_name} - Optional Python Wrapper
+
+This is an optional Python wrapper for the skill.
+You can implement skill logic here or call external tools.
+"""
+
+import sys
+import argparse
+from pathlib import Path
+
+
+def main():
+    """Main entry point"""
+    parser = argparse.ArgumentParser(description="{skill_display_name}")
+    parser.add_argument("input", help="Input parameter")
+    parser.add_argument("--output", help="Output file path")
+
+    args = parser.parse_args()
+
+    # Implement skill logic here
+    print(f"Running {skill_name} skill...")
+    print(f"Input: {{args.input}}")
+
+    # Example: Process input and generate output
+    result = process(args.input)
+
+    # Save output if specified
+    if args.output:
+        with open(args.output, 'w') as f:
+            f.write(result)
+        print(f"Output saved to: {{args.output}}")
+    else:
+        print(result)
+
+
+def process(input_data):
+    """Process input and return result"""
+    # TODO: Implement processing logic
+    return f"Processed: {{input_data}}"
+
+
+if __name__ == "__main__":
+    main()
+''')
+
+    os.chmod(run_py, 0o755)
+    print(f"✓ Created: run.py (optional wrapper)")
+
+    # Summary
+    print(f"\n{'='*70}")
+    print(f"✅ Skill created: {skill_display_name}")
+    print(f"{'='*70}")
+    print(f"Location: {skill_dir}")
+    print(f"Domain: {domain}")
+    print(f"Security Level: medium (default)")
+    print()
+    print("Generated files:")
+    print("  ✓ SKILL.md - Main skill definition")
+    print("  ✓ design-requirements.md - Quality standards")
+    print("  ✓ README.md - Usage guide")
+    print("  ✓ run.py - Optional Python wrapper")
+    print()
+    print("Next steps:")
+    print("  1. Edit SKILL.md to add skill instructions")
+    print("  2. Update metadata (requires.bins, requires.env, etc.)")
+    print("  3. Test: jarvis-skill test", skill_name)
+    print("  4. Register: jarvis-skill refresh")
+    print()
+
+
+def test_skill(skill_path: str):
+    """Test skill by running validator"""
+    skill_path = Path(skill_path)
+
+    if skill_path.is_dir():
+        skill_path = skill_path / "SKILL.md"
+
+    if not skill_path.exists():
+        print(f"❌ Error: SKILL.md not found: {skill_path}")
+        sys.exit(1)
+
+    # Run validator
+    validator_script = REGISTRY_DIR / "skill-validator.py"
+    result = subprocess.run(
+        ["python3", str(validator_script), str(skill_path)],
+        capture_output=False
+    )
+
+    sys.exit(result.returncode)
+
+
+def list_skills():
+    """List all discovered skills"""
+    discovery_script = REGISTRY_DIR / "skill-discovery.py"
+    result = subprocess.run(
+        ["python3", str(discovery_script), "--list"],
+        capture_output=False
+    )
+
+    sys.exit(result.returncode)
+
+
+def refresh_registry():
+    """Refresh skill registry"""
+    discovery_script = REGISTRY_DIR / "skill-discovery.py"
+
+    print("🔍 Discovering skills from all locations...")
+    result = subprocess.run(
+        ["python3", str(discovery_script)],
+        capture_output=False
+    )
+
+    if result.returncode == 0:
+        print("\n✅ Skill registry refreshed successfully!")
+    else:
+        print("\n❌ Skill registry refresh failed")
+
+    sys.exit(result.returncode)
+
+
+def main():
+    """CLI entry point"""
+    parser = argparse.ArgumentParser(
+        description="JARVIS Skill CLI - Create and manage skills",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  jarvis-skill create market-screener --domain investment
+  jarvis-skill create blog-poster --domain content-creation --user
+  jarvis-skill test market-screener
+  jarvis-skill list
+  jarvis-skill refresh
+        """
+    )
+
+    subparsers = parser.add_subparsers(dest="command", help="Commands")
+
+    # Create command
+    create_parser = subparsers.add_parser("create", help="Create new skill from template")
+    create_parser.add_argument("name", help="Skill name (will be converted to kebab-case)")
+    create_parser.add_argument("--domain", required=True,
+                                choices=["investment", "content-creation", "research", "productivity", "general", "security"],
+                                help="Skill domain")
+    create_parser.add_argument("--user", action="store_true",
+                                help="Create in user skills directory (~/.jarvis/skills)")
+    create_parser.add_argument("--description", help="Skill description")
+
+    # Test command
+    test_parser = subparsers.add_parser("test", help="Test/validate skill")
+    test_parser.add_argument("skill_path", help="Path to skill directory or SKILL.md")
+
+    # List command
+    subparsers.add_parser("list", help="List all discovered skills")
+
+    # Refresh command
+    subparsers.add_parser("refresh", help="Refresh skill registry")
+
+    args = parser.parse_args()
+
+    if not args.command:
+        parser.print_help()
+        sys.exit(1)
+
+    # Execute command
+    if args.command == "create":
+        location = "user" if args.user else "workspace"
+        create_skill(args.name, args.domain, location, args.description)
+    elif args.command == "test":
+        test_skill(args.skill_path)
+    elif args.command == "list":
+        list_skills()
+    elif args.command == "refresh":
+        refresh_registry()
+
+
+if __name__ == "__main__":
+    main()

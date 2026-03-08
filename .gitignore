@@ -1,0 +1,270 @@
+# JARVIS .gitignore - Comprehensive rules for public repository
+
+# ============================================================================
+# ENVIRONMENT AND SECRETS
+# ============================================================================
+.env
+.env.*
+!.env.example
+*.key
+*.secret
+**/api-keys.json
+**/credentials.json
+**/*password*
+**/*token*
+
+# ============================================================================
+# PERSONAL DATA AND CONTEXT
+# ============================================================================
+# Context system (moved to jarvis-private/)
+context/
+context-private/
+
+# Personal jarvis-private directory
+../jarvis-private/
+jarvis-private/
+
+# ============================================================================
+# GENERATED CONTENT AND REPORTS
+# ============================================================================
+# Reports (generated, may contain sensitive data)
+reports/
+reports-*/
+*.report.md
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# ============================================================================
+# APPLICATIONS AND PROJECTS
+# ============================================================================
+# Apps directory (personal work)
+apps/
+
+# Personal projects
+projects/
+content-packages/
+research-digests/
+
+# ============================================================================
+# DOCUMENTATION (PERSONAL)
+# ============================================================================
+# Research and planning materials
+NineSkillsVideos/
+MITTechnologyReview/
+PromotionPlanning/
+SecondBrain/
+BrowserAutomation/
+DocsDeepBrain/
+
+# Personal documentation files
+**/personal-notes/
+**/private-docs/
+**/*-PRIVATE.md
+
+# ============================================================================
+# SKILLS (PERSONAL)
+# ============================================================================
+# Personal skills (moved to jarvis-private/skills/)
+skills/byrddynasty-video-creator/
+skills/image-generator-lovart/
+skills/image-repository-manager/
+skills/thumbnail-design/
+skills/youtube-shorts-creator/
+skills/social-poster/
+skills/slack-notifier/
+skills/gmail-insights/
+skills/calendar-scheduler/
+skills/youtube-monitor/
+skills/youtube-content-aggregator/
+skills/video-standards-checker/
+skills/script-optimizer/
+
+# ============================================================================
+# REPOSITORIES
+# ============================================================================
+# Other repositories (should be outside JARVIS)
+repos/
+../jarvis-repos/
+
+# ============================================================================
+# SYSTEM AND TEMPORARY FILES
+# ============================================================================
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+__pycache__/
+*.py[cod]
+*$py.class
+*.swp
+*.swo
+.*.sw[op]
+
+# ============================================================================
+# IDE AND EDITOR
+# ============================================================================
+.idea/
+.vscode/
+*.code-workspace
+.project
+.settings/
+.classpath
+.c9/
+
+# ============================================================================
+# PYTHON
+# ============================================================================
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+virtualenv/
+.Python
+
+# Distribution / packaging
+.eggs/
+*.egg-info/
+*.egg
+MANIFEST
+dist/
+build/
+develop-eggs/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# PyInstaller
+*.spec
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ============================================================================
+# NODE.JS
+# ============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.npm
+.eslintcache
+
+# ============================================================================
+# DATABASE
+# ============================================================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================================================
+# CLAUDE CODE
+# ============================================================================
+# Claude Code session files (keep settings, exclude sessions)
+.claude-session/
+*.session.json
+.claude/sessions/
+
+# ============================================================================
+# BACKUPS
+# ============================================================================
+*.backup
+*.bak
+*~
+backup-*/
+jarvis-backup-*/
+
+# ============================================================================
+# DATA FILES
+# ============================================================================
+# Market data (can be regenerated)
+data/market-data/
+data/historical/
+**/cache/
+
+# User-specific data
+data/user-preferences/
+data/personal/
+
+# ============================================================================
+# MEDIA FILES (LARGE)
+# ============================================================================
+# Videos (too large for git)
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Audio
+*.mp3
+*.wav
+*.flac
+
+# Large images (keep smaller diagrams)
+*.psd
+*.ai
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ============================================================================
+# DOCUMENTATION STAGING
+# ============================================================================
+# Old/archived documentation
+Docs-old/
+Docs-archive/
+docs-backup/
+
+# Work in progress docs
+*-WIP.md
+*-DRAFT.md
+*-TODO.md
+
+# ============================================================================
+# ALLOWED DOCUMENTATION
+# ============================================================================
+# These are explicitly allowed (override above rules if needed)
+!README.md
+!CONTRIBUTING.md
+!LICENSE
+!CLAUDE.md
+!docs/**/*.md
+
+# ============================================================================
+# REORGANIZATION FILES (TEMPORARY)
+# ============================================================================
+REORGANIZATION-*.md

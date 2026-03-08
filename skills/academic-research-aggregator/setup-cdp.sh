@@ -1,0 +1,23 @@
+#!/bin/bash
+# setup-cdp.sh - Set up CDP connection to running Chrome with Auburn Library
+
+echo "=========================================="
+echo "Auburn Library CDP Setup"
+echo "=========================================="
+echo ""
+echo "This will connect agent-browser to your running Chrome browser."
+echo ""
+echo "Instructions:"
+echo "  1. Open Chrome with remote debugging enabled:"
+echo "     /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222"
+echo ""
+echo "  2. In that Chrome window, log into Auburn Library"
+echo "  3. Navigate to Business Source Premier"
+echo "  4. Keep that Chrome window open"
+echo ""
+echo "Then run this test:"
+echo "  agent-browser open \"https://research.ebsco.com/c/j6vsfb/search/advanced/publications/MISQ\""
+echo ""
+echo "Note: You'll need to keep Chrome running with port 9222 open whenever"
+echo "you want to run the research aggregator."
+echo ""

@@ -1,0 +1,95 @@
+---
+name: {{SKILL_NAME}}
+description: {{SKILL_DESCRIPTION}}
+metadata:
+  jarvis:
+    requires:
+      bins: []
+      env: []
+      config: []
+      mcp_servers: []
+    primaryEnv: ""
+    domain: {{DOMAIN}}
+    security_level: medium
+    requires_approval: false
+    allowed_operations:
+      - read
+    version: 1.0.0
+    author: JARVIS
+    tags:
+      - {{DOMAIN}}
+    integrates_with: []
+    feeds_into: []
+    consumes_from: []
+---
+
+# {{SKILL_DISPLAY_NAME}}
+
+{{SKILL_DESCRIPTION}}
+
+## Purpose
+
+Describe the purpose of this skill and when to use it.
+
+## Prerequisites
+
+- List any prerequisites here
+- Environment variables needed
+- API keys or credentials
+
+## Input
+
+- **Parameter 1** (required): Description
+- **Parameter 2** (optional): Description
+
+## Process Steps
+
+### Step 1: Initial Setup
+
+Describe the first step of the process.
+
+### Step 2: Main Execution
+
+Describe the main execution logic.
+
+### Step 3: Generate Output
+
+Describe output generation.
+
+## Output Format
+
+Describe the expected output format.
+
+## Example Usage
+
+```bash
+# Example command or invocation
+```
+
+## Save Location
+
+Save outputs to: `reports/{{SKILL_NAME}}-[DATE].md`
+
+## Memory Update
+
+After completing:
+1. Update `context/memory/work-status.md` with completion
+2. If new insights discovered, add to `context/memory/learnings.md`
+
+## Integration
+
+**Feeds into:**
+- List skills that consume output from this skill
+
+**Uses:**
+- List dependencies (CLI tools, APIs, other skills)
+
+## Notes
+
+- Important notes about this skill
+- Limitations or edge cases
+- Best practices
+
+---
+
+*This skill is part of the JARVIS {{DOMAIN}} domain.*

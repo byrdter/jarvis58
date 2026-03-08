@@ -1,0 +1,134 @@
+# {{SKILL_DISPLAY_NAME}} - Design Requirements
+
+**Skill ID:** {{SKILL_NAME}}
+**Domain:** {{DOMAIN}}
+**Version:** 1.0.0
+**Security Level:** Medium
+
+## Quality Standards
+
+### 1. Accuracy
+
+- Define accuracy requirements
+- Data validation criteria
+- Error tolerance levels
+
+### 2. Completeness
+
+- Required output elements
+- Minimum information needed
+- Optional enhancements
+
+### 3. Clarity
+
+- Output formatting standards
+- Language and terminology
+- Presentation guidelines
+
+### 4. Actionability
+
+- Actionable recommendations
+- Clear next steps
+- Decision support criteria
+
+## Technical Requirements
+
+### Data Sources
+
+- Primary data sources
+- Backup or fallback sources
+- Data quality requirements
+
+### Dependencies
+
+- Required CLI tools
+- Required APIs or services
+- Required environment variables
+
+### Performance
+
+- Expected execution time
+- Resource requirements
+- Caching strategy (if applicable)
+
+### Error Handling
+
+- Expected error conditions
+- Fallback behavior
+- User notification strategy
+
+## Security Requirements
+
+### Access Control
+
+- Authentication requirements
+- Authorization levels needed
+- Data access restrictions
+
+### Data Protection
+
+- Sensitive data handling
+- Logging guidelines
+- PII considerations
+
+### Approval Gates
+
+- Operations requiring user approval
+- Destructive operations
+- High-risk actions
+
+## Integration Requirements
+
+### Inputs
+
+- Expected input format
+- Input validation rules
+- Default values
+
+### Outputs
+
+- Output format specification
+- File naming conventions
+- Storage location
+
+### Interoperability
+
+- Skills that depend on this skill
+- Skills this skill depends on
+- Data exchange formats
+
+## Testing Requirements
+
+### Unit Tests
+
+- Core logic tests
+- Edge case tests
+- Error condition tests
+
+### Integration Tests
+
+- Dependency integration
+- End-to-end workflow
+- Data pipeline validation
+
+### Manual Verification
+
+- User acceptance criteria
+- Visual inspection points
+- Quality checklist
+
+## Documentation Requirements
+
+- User-facing documentation
+- Developer documentation
+- Examples and tutorials
+
+## Maintenance Requirements
+
+- Update frequency
+- Deprecation policy
+- Backward compatibility
+
+---
+
+*Design requirements ensure consistent quality across all JARVIS skills.*

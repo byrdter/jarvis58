@@ -1,0 +1,23 @@
+{
+  "registry_version": "1.0.0",
+  "last_updated": "2026-02-06T10:33:39.478316Z",
+  "description": "JARVIS Ecosystem Application Registry",
+  "apps": [
+    "content-creation",
+    "investment",
+    "knowledge-management",
+    "research"
+  ],
+  "app_count": 4,
+  "domains": [
+    "content",
+    "investments",
+    "knowledge",
+    "research"
+  ],
+  "metadata": {
+    "created": "2026-02-06",
+    "maintainer": "system",
+    "schema_version": "1.0.0"
+  }
+}

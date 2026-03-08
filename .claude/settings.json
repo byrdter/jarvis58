@@ -1,0 +1,30 @@
+{
+  "bypassPermissions": true,
+  "model": "claude-sonnet-4-5-20250929",
+  "outputStyle": ".claude/output-style.md",
+  "env": {
+    "enableToolSearch": true
+  },
+  "mcpServers": {
+    "gmail": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gmail"],
+      "env": {}
+    },
+    "google-calendar": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-calendar"],
+      "env": {}
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {}
+    },
+    "youtube": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-youtube"],
+      "env": {}
+    }
+  }
+}

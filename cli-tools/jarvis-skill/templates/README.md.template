@@ -1,0 +1,114 @@
+# {{SKILL_DISPLAY_NAME}}
+
+{{SKILL_DESCRIPTION}}
+
+## Installation
+
+This skill is part of the JARVIS {{DOMAIN}} domain.
+
+### Prerequisites
+
+```bash
+# Install required dependencies
+# List any pip, npm, or brew packages needed
+```
+
+### Environment Variables
+
+```bash
+# Add to .env or export
+export REQUIRED_VAR="value"
+```
+
+## Usage
+
+### Basic Usage
+
+```bash
+# Example command
+```
+
+### Advanced Usage
+
+```bash
+# Advanced example
+```
+
+## Configuration
+
+Configuration options:
+
+- **Option 1**: Description
+- **Option 2**: Description
+
+## Output
+
+This skill produces:
+
+- Output type 1
+- Output type 2
+
+Outputs are saved to: `reports/{{SKILL_NAME}}-*.md`
+
+## Integration
+
+### Depends On
+
+- Dependency 1
+- Dependency 2
+
+### Used By
+
+- Skill 1
+- Skill 2
+
+## Development
+
+### Running Tests
+
+```bash
+# Test command
+```
+
+### Debugging
+
+```bash
+# Debug command
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue 1: Problem description**
+
+Solution: Describe solution
+
+**Issue 2: Problem description**
+
+Solution: Describe solution
+
+## Contributing
+
+To improve this skill:
+
+1. Read `design-requirements.md` for quality standards
+2. Make changes following JARVIS patterns
+3. Test thoroughly
+4. Update documentation
+
+## License
+
+Part of JARVIS - Personal AI Assistant
+
+## Author
+
+JARVIS - Just A Rather Very Intelligent System
+
+## Version History
+
+- **1.0.0** ({{DATE}}): Initial version
+
+---
+
+*For more information, see the main JARVIS documentation.*

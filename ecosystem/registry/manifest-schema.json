@@ -1,0 +1,217 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JARVIS App Manifest",
+  "description": "Schema for JARVIS ecosystem app manifests",
+  "type": "object",
+  "required": [
+    "app_id",
+    "name",
+    "version",
+    "domain",
+    "status",
+    "description",
+    "location",
+    "capabilities",
+    "data_types",
+    "integration",
+    "interface"
+  ],
+  "properties": {
+    "app_id": {
+      "type": "string",
+      "description": "Unique identifier for the app (kebab-case)",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable app name"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version (e.g., 1.0.0)",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Primary domain (e.g., investments, research, content, knowledge)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "inactive", "development", "deprecated"],
+      "description": "Current status of the app"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of what the app does"
+    },
+    "location": {
+      "type": "string",
+      "description": "Relative path to app directory"
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "List of capabilities this app provides",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "input", "output", "endpoint"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique capability identifier (snake_case)"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable capability name"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this capability does"
+          },
+          "input": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Required input parameters"
+          },
+          "output": {
+            "type": "string",
+            "description": "Output type"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "API endpoint for this capability"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Keywords for intent matching"
+          }
+        }
+      }
+    },
+    "data_types": {
+      "type": "array",
+      "description": "Types of data this app manages",
+      "items": {
+        "type": "object",
+        "required": ["type", "description", "queryable", "endpoint"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Data type identifier"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this data represents"
+          },
+          "queryable": {
+            "type": "boolean",
+            "description": "Whether this data can be queried"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "API endpoint to query this data"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Keywords for data queries"
+          }
+        }
+      }
+    },
+    "integration": {
+      "type": "object",
+      "required": ["required", "integrates_with", "provides_to", "consumes_from"],
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "description": "Whether this app requires integration with others"
+        },
+        "integrates_with": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "App IDs this app integrates with"
+        },
+        "provides_to": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Apps or components that consume this app's data"
+        },
+        "consumes_from": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Apps or components this app consumes data from"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional integration notes"
+        }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "CLI tools required"
+        },
+        "apis": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "External APIs used"
+        },
+        "services": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "External services required"
+        }
+      }
+    },
+    "interface": {
+      "type": "object",
+      "required": ["api", "cli"],
+      "properties": {
+        "api": {
+          "type": ["string", "null"],
+          "description": "API base URL (e.g., http://localhost:8001)"
+        },
+        "cli": {
+          "type": ["string", "null"],
+          "description": "CLI command (e.g., jarvis investment)"
+        },
+        "web": {
+          "type": ["string", "null"],
+          "description": "Web interface URL if available"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the app",
+      "properties": {
+        "created": {
+          "type": "string",
+          "description": "Creation date (YYYY-MM-DD)"
+        },
+        "updated": {
+          "type": "string",
+          "description": "Last update date (YYYY-MM-DD)"
+        },
+        "phase": {
+          "type": "string",
+          "description": "Development phase"
+        },
+        "maintainer": {
+          "type": "string",
+          "description": "Maintainer identifier"
+        },
+        "tags": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Tags for categorization"
+        }
+      }
+    }
+  }
+}

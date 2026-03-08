@@ -1,0 +1,14 @@
+# Email configuration (contains credentials)
+email-config.sh
+
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# Test outputs
+test-*.md
+digest.md
+
+# Logs
+*.log

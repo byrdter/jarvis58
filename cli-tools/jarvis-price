@@ -1,0 +1,15 @@
+#!/bin/bash
+# JARVIS Market Data CLI Wrapper
+# Activates venv and runs jarvis-price command
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VENV_DIR="$SCRIPT_DIR/market-data/.venv"
+
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Error: Virtual environment not found at $VENV_DIR" >&2
+    echo "Run: cd $SCRIPT_DIR/market-data && uv pip install -e ." >&2
+    exit 1
+fi
+
+source "$VENV_DIR/bin/activate"
+jarvis-price "$@" 2>&1 | grep -v "Pandas4Warning"
