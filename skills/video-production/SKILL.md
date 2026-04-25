@@ -26,6 +26,47 @@ Do NOT use this skill for:
 
 ---
 
+## Pre-production: script + segment plan (do this FIRST)
+
+Before any HeyGen recording or pipeline run, Claude produces a single document — the **script + segment plan** — that locks both the voiceover AND the visual treatment for every segment. The user reviews and modifies, then records HeyGen from the final script.
+
+This step is non-negotiable. Trying to plan visuals after recording HeyGen forces avatar position into whatever HeyGen rendered; planning together means the recording itself can leave room for the chosen composition (e.g. avatar centered with arms loose for orbiting graphics, vs. avatar tight in frame for corner PiP).
+
+### Output format
+
+One markdown document with **25–30 segments** (the typical Byrddynasty long-form length). Each segment specifies:
+
+| Field | Description |
+|---|---|
+| **Segment number** | 001, 002, … (sequential, no sub-numbering) |
+| **Title** | 3–5 word descriptive label |
+| **Duration estimate** | Target 20–30 seconds spoken at ~150 wpm → ~50–75 words |
+| **VO (voiceover)** | The actual script text the avatar will read |
+| **Composition** | One of the 8 modes (full screen / center stage / BR-square / BR-circle / BL-square / BL-circle / side-left / side-right) |
+| **Tool** | Remotion / HyperFrames / Motion Canvas / ExcaliMotion / VHS / Playwright / Nano Banana still / HeyGen-only (full screen, no overlay) |
+| **Imagery** | Concrete description: what specifically appears, what animates, what colors, what data/labels/quotes |
+
+### Authoring rules
+
+- **Composition rotation:** No single composition mode appears more than ~3 times consecutively. Variety in position is as important as variety in tool.
+- **Tool variety:** Aim to use at least 5 of the 7 palette tools across a 28-segment video. Don't use the same tool more than 4–5 times unless content genuinely demands it.
+- **Hero moments** (intro, big reveal, act breaks, outro) → full screen avatar OR full-screen graphic. Reserve these for moments that earn it.
+- **Stills sparingly:** 2–4 Nano Banana stills per video, no more — they're the rest beat against motion-heavy content.
+- **VHS earns its slot:** when the segment talks about "running it," "watching this work," or shows real terminal output, VHS is the answer.
+- **Playwright earns its slot:** when the segment references "the dashboard," "the website," "the GitHub UI," Playwright captures the real thing.
+
+### Storage
+
+Save to: `Byrddynasty-Videos/<episode>/01-script/SCRIPT-AND-PLAN.md`
+
+Project naming convention: `video-NN-<theme>/` (matches Video 7's `video-7-self-improvement/`). For very recent / in-flight episodes the doc may live at the project root before the bin layout is created — that's fine for drafting; move it under `01-script/` once the project bins are set up.
+
+### After the script is approved
+
+User records HeyGen from the final script (with 1-second silences between every segment). User drops the MP4 in `02-heygen/`. Pipeline takes over from stage 1.
+
+---
+
 ## Input contract — the spine
 
 The pipeline starts from a single HeyGen render. To make automation possible, the HeyGen file MUST conform to this contract:
