@@ -242,6 +242,30 @@ data/personal/
 *.7z
 
 # ============================================================================
+# VIDEO PRODUCTION OUTPUTS
+# ============================================================================
+# Bin convention: see skills/video-production/SKILL.md
+# Source code in 03-remotion/ through 08-playwright/ is intentionally NOT
+# excluded — those are renderer projects worth committing. Output MP4s are
+# already handled by *.mp4 globally above.
+
+# HeyGen recording scripts (regenerable from SCRIPT-AND-PLAN.md)
+**/HEYGEN-SCRIPT.md
+
+# Per-segment VO files for CC Desktop HeyGen automation (regenerable)
+**/01-script/segments/
+**/segments/segment-*.txt
+
+# Raw HeyGen renders (defense-in-depth; *.mp4 already covers the file extension)
+**/02-heygen/
+
+# Per-video Nano Banana stills (large PNGs not caught by other rules)
+**/09-stills/
+
+# Final assembly + per-segment intermediate outputs
+**/10-output/
+
+# ============================================================================
 # DOCUMENTATION STAGING
 # ============================================================================
 # Old/archived documentation

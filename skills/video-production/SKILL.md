@@ -48,6 +48,7 @@ One markdown document with **25–30 segments** (the typical Byrddynasty long-fo
 
 ### Authoring rules
 
+- **Voice — collective "we" only, never singular "I".** Scripts must use first-person plural pronouns: **we, us, our, ours, ourselves**. Never use **I, me, my, mine, myself**. Contractions follow the same rule: "we're" not "I'm," "we've" not "I've," "we'll" not "I'll," "we'd" not "I'd." The avatar speaks for a collective, not an individual narrator. Viewers should hear a representative voice. This applies to every script for every video — no exceptions, including casual asides ("we sleep fine," "we built this," "we caught it"). Rephrase rather than break the rule.
 - **Composition rotation:** No single composition mode appears more than ~3 times consecutively. Variety in position is as important as variety in tool.
 - **Tool variety:** Aim to use at least 5 of the 7 palette tools across a 28-segment video. Don't use the same tool more than 4–5 times unless content genuinely demands it.
 - **Hero moments** (intro, big reveal, act breaks, outro) → full screen avatar OR full-screen graphic. Reserve these for moments that earn it.
@@ -61,9 +62,44 @@ Save to: `Byrddynasty-Videos/<episode>/01-script/SCRIPT-AND-PLAN.md`
 
 Project naming convention: `video-NN-<theme>/` (matches Video 7's `video-7-self-improvement/`). For very recent / in-flight episodes the doc may live at the project root before the bin layout is created — that's fine for drafting; move it under `01-script/` once the project bins are set up.
 
-### After the script is approved
+### After script approval — generate HeyGen-bound files
 
-User records HeyGen from the final script (with 1-second silences between every segment). User drops the MP4 in `02-heygen/`. Pipeline takes over from stage 1.
+Once Terry signs off on `SCRIPT-AND-PLAN.md`, generate **two outputs** in `01-script/`. They serve different consumers — one is for the human recorder, one is for Claude Code Desktop's HeyGen automation.
+
+**1. `HEYGEN-SCRIPT.md` — combined markdown for human review**
+
+For the recorder to read before / during HeyGen authoring (knows how to frame each scene).
+
+- Header section: source file, status, recording rules (1-second silence, scene-per-segment), parsing instructions
+- One block per segment, in order, separated by `---`
+- Segment header: exactly `## Segment NNN` (3-digit zero-padded)
+- Two labeled fields per segment:
+  - `**Composition:**` — one-line description of avatar position
+  - `**VO:**` followed by the voiceover paragraph
+- Recording notes (e.g. "replace placeholder numbers day-of-recording") as `>` blockquotes below the VO
+
+NOT the file CC Desktop reads — CC Desktop wants per-segment plain text (see below).
+
+**2. `01-script/segments/segment-NNN.txt` — per-segment VO files for CC Desktop**
+
+One file per segment, consumed directly by CC Desktop's HeyGen automation. CC Desktop opens each file, types its contents into the corresponding HeyGen scene's ProseMirror script field.
+
+- **Path:** `01-script/segments/segment-NNN.txt`
+- **Naming:** 3-digit zero-padded (`segment-001.txt` through `segment-NNN.txt`)
+- **Contents:** ONLY the VO text. No titles, no composition labels, no stage directions, no markdown, no leading/trailing whitespace beyond a single trailing newline
+- **Encoding:** plain UTF-8
+
+CC Desktop's full workflow + constraints (ProseMirror requires Chrome MCP tab in foreground; division of labor between CC Desktop and user) is documented in the user-level memory at `~/.claude/.../memory/reference_cc_desktop_heygen_automation.md`. Read that before debugging any CC Desktop issue.
+
+**What to strip when generating both files:** segment titles, duration estimates, tool selection, imagery descriptions. None of that needs to reach HeyGen.
+
+**What to keep verbatim:** the VO text. No paraphrasing or "cleanup" between `SCRIPT-AND-PLAN.md` and either output. If the VO needs changing, change it in the master plan first, then regenerate.
+
+**Regeneration rule:** Any time the VO is edited in `SCRIPT-AND-PLAN.md`, regenerate BOTH `HEYGEN-SCRIPT.md` AND every `segments/segment-NNN.txt` from scratch. Don't keep them in drift.
+
+### After HeyGen recording
+
+User opens HeyGen AI Studio in Chrome, creates a 16:9 project, gives CC Desktop the URL. CC Desktop types the 28 scenes (~15 min). User adds avatars, background images, voice settings, then submits. HeyGen renders the combined MP4. User drops it in `02-heygen/`. Pipeline takes over from stage 1.
 
 ---
 
