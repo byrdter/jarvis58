@@ -26,5 +26,19 @@
       "args": ["-y", "@modelcontextprotocol/server-youtube"],
       "env": {}
     }
+  },
+  "hooks": {
+    "PreCompact": [
+      {
+        "type": "command",
+        "command": "bash .claude/hooks/save-session-state.sh"
+      }
+    ],
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "bash .claude/hooks/restore-session-state.sh"
+      }
+    ]
   }
 }

@@ -292,3 +292,17 @@ docs-backup/
 # REORGANIZATION FILES (TEMPORARY)
 # ============================================================================
 REORGANIZATION-*.md
+
+# ============================================================================
+# SEPARATE REPOS AND LOCAL-ONLY CLAUDE STATE
+# ============================================================================
+# agent-sdk is its own repo (github.com/byrdter/jarvis_phase2)
+agent-sdk/
+
+# Claude Code runtime state (per-machine, never commit)
+.claude/worktrees/
+.claude/scheduled_tasks.lock
+.claude/skills/
+
+# Regenerable HeyGen VO segment files (broaden existing segments rule)
+**/heygen-segments/
