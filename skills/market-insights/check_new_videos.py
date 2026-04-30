@@ -10,6 +10,7 @@ Returns:
     JSON output if new video found, silent exit if no new video
 """
 
+import os
 import re
 import json
 from datetime import datetime
@@ -19,7 +20,13 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 CHANNEL_URL = "https://www.youtube.com/@TheTechnicalTraders/videos"
 STATE_FILE = Path(__file__).parent / "last_processed.json"
-TRANSCRIPT_DIR = Path(__file__).parent / "transcripts"
+
+JARVIS_PRIVATE = Path(os.environ.get(
+    "JARVIS_PRIVATE",
+    Path.home() / "Library/CloudStorage/Dropbox/jarvis-private"
+))
+TRANSCRIPT_DIR = JARVIS_PRIVATE / "research/transcripts/vermeulen"
+TRANSCRIPT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def get_latest_video():
@@ -99,8 +106,27 @@ def fetch_transcript(video_id):
         None: If transcript unavailable
     """
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        full_text = " ".join([entry['text'] for entry in transcript])
+        # Instantiate API
+        ytt_api = YouTubeTranscriptApi()
+
+        # Get available transcripts
+        transcript_list = ytt_api.list(video_id)
+
+        # Try English first, fall back to any available language
+        try:
+            transcript = transcript_list.find_transcript(['en'])
+        except:
+            # Try generated transcript in English or Spanish
+            try:
+                transcript = transcript_list.find_generated_transcript(['en', 'es'])
+            except:
+                # Last resort: get any available transcript
+                for transcript in transcript_list:
+                    break
+
+        # Fetch the transcript entries
+        entries = transcript.fetch()
+        full_text = " ".join([entry.text for entry in entries])
         return full_text
     except Exception as e:
         print(f"Error fetching transcript: {e}")
