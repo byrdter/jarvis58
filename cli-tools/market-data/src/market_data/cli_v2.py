@@ -6,9 +6,11 @@ Fetches real market data using Alpaca API (preferred) or yfinance (fallback).
 """
 
 import json
+from datetime import datetime
 from typing import Optional
 
 import typer
+import yfinance as yf
 from rich import print as rprint
 from rich.console import Console
 from rich.table import Table
@@ -308,6 +310,151 @@ def stage(
 
     except Exception as e:
         console.print(f"[red]Error determining stage for {symbol}: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command()
+def news(
+    symbol: str = typer.Argument(..., help="Stock/ETF symbol"),
+    count: int = typer.Option(5, "--count", "-n", help="Number of news articles to fetch"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Get recent news articles for a symbol."""
+    try:
+        ticker = yf.Ticker(symbol)
+        news_items = ticker.news
+
+        if not news_items:
+            console.print(f"[yellow]No news found for {symbol}[/yellow]")
+            raise typer.Exit(0)
+
+        # Limit to requested count
+        news_items = news_items[:count]
+
+        if json_output:
+            data = {
+                "symbol": symbol.upper(),
+                "count": len(news_items),
+                "articles": []
+            }
+
+            for item in news_items:
+                content = item.get("content", {})
+                provider = content.get("provider", {})
+                canonical = content.get("canonicalUrl", {})
+
+                article = {
+                    "title": content.get("title", ""),
+                    "publisher": provider.get("displayName", ""),
+                    "link": canonical.get("url", ""),
+                    "published": content.get("pubDate", ""),
+                    "summary": content.get("summary", ""),
+                }
+                data["articles"].append(article)
+
+            print(json.dumps(data, indent=2))
+        else:
+            console.print(f"\n[bold cyan]{symbol.upper()} - Recent News[/bold cyan]")
+            console.print(f"Showing {len(news_items)} most recent articles\n")
+
+            for i, item in enumerate(news_items, 1):
+                content = item.get("content", {})
+                provider = content.get("provider", {})
+                canonical = content.get("canonicalUrl", {})
+
+                title = content.get("title", "No title")
+                publisher = provider.get("displayName", "Unknown")
+                link = canonical.get("url", "")
+                pub_date = content.get("pubDate", "Unknown date")
+                summary = content.get("summary", "")
+
+                console.print(f"[cyan]{i}.[/cyan] [bold]{title}[/bold]")
+                console.print(f"   Source: {publisher} | {pub_date}")
+                if summary:
+                    console.print(f"   {summary}")
+                if link:
+                    console.print(f"   Link: {link}")
+                console.print()
+
+    except Exception as e:
+        console.print(f"[red]Error fetching news for {symbol}: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command()
+def fundamentals(
+    symbol: str = typer.Argument(..., help="Stock/ETF symbol"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+):
+    """Get fundamental data for a symbol."""
+    try:
+        ticker = yf.Ticker(symbol)
+        info = ticker.info
+
+        # Extract key fundamental data
+        data = {
+            "symbol": symbol.upper(),
+            "name": info.get("longName") or info.get("shortName", ""),
+            "sector": info.get("sector"),
+            "industry": info.get("industry"),
+            "market_cap": info.get("marketCap"),
+            "pe_ratio": info.get("trailingPE") or info.get("forwardPE"),
+            "dividend_yield": info.get("dividendYield"),
+            "52_week_high": info.get("fiftyTwoWeekHigh"),
+            "52_week_low": info.get("fiftyTwoWeekLow"),
+            "average_volume": info.get("averageVolume"),
+            "beta": info.get("beta"),
+            "description": info.get("longBusinessSummary", "")[:200] + "..." if info.get("longBusinessSummary") else None,
+        }
+
+        if json_output:
+            print(json.dumps(data, indent=2))
+        else:
+            console.print(f"\n[bold cyan]{data['name']} ({symbol.upper()})[/bold cyan]\n")
+
+            if data["sector"]:
+                console.print(f"Sector: {data['sector']}")
+            if data["industry"]:
+                console.print(f"Industry: {data['industry']}")
+
+            console.print()
+
+            table = Table(title="Key Fundamentals")
+            table.add_column("Metric", style="cyan")
+            table.add_column("Value", style="green")
+
+            if data["market_cap"]:
+                market_cap_b = data["market_cap"] / 1_000_000_000
+                table.add_row("Market Cap", f"${market_cap_b:.2f}B")
+
+            if data["pe_ratio"]:
+                table.add_row("P/E Ratio", f"{data['pe_ratio']:.2f}")
+
+            if data["dividend_yield"]:
+                yield_pct = data["dividend_yield"] * 100
+                table.add_row("Dividend Yield", f"{yield_pct:.2f}%")
+
+            if data["52_week_high"]:
+                table.add_row("52-Week High", f"${data['52_week_high']:.2f}")
+
+            if data["52_week_low"]:
+                table.add_row("52-Week Low", f"${data['52_week_low']:.2f}")
+
+            if data["average_volume"]:
+                vol_m = data["average_volume"] / 1_000_000
+                table.add_row("Avg Volume", f"{vol_m:.2f}M")
+
+            if data["beta"]:
+                table.add_row("Beta", f"{data['beta']:.2f}")
+
+            console.print(table)
+
+            if data["description"]:
+                console.print(f"\n[bold]Description:[/bold]")
+                console.print(data["description"])
+
+    except Exception as e:
+        console.print(f"[red]Error fetching fundamentals for {symbol}: {e}[/red]")
         raise typer.Exit(1)
 
 
