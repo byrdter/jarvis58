@@ -2,7 +2,7 @@
 
 **Episode:** JARVIS Video 8
 **Theme:** Phase 8 self-improvement loop extensions — contradiction detection, cross-wiki bridges, auto-apply tier
-**Target length:** ~12 minutes (28 segments × ~25 sec average)
+**Target length:** ~12.5 minutes (29 segments × ~25 sec average)
 **Status:** DRAFT — for Terry's review and modification before HeyGen recording
 
 ---
@@ -14,7 +14,7 @@
 | **Hook + Setup** | 001–006 | What Phase 7 did, three things it couldn't do |
 | **The Build** | 007–016 | Three new abilities, one at a time, with demos |
 | **The Results** | 017–023 | Architecture, schedule, cost, what's actually running |
-| **Bigger Picture** | 024–028 | Phase 8 in context, Phase 9 + 10 tease, vision, CTA |
+| **Bigger Picture** | 024–029 | Phase 8 in context, Phase 9 + 10 tease, vision, CTA, emotional close |
 
 ---
 
@@ -25,6 +25,7 @@
 008 BR-C 009 SR    010 BL-C  011 BR-S  012 SR    013 FS-G  014 BR-C
 015 SL   016 BR-S  017 FS    018 SR    019 SL    020 BR-C  021 SR
 022 SL   023 CS    024 FS    025 SR    026 SL    027 FS    028 BR-C
+029 FS
 ```
 
 Legend: FS = full screen avatar, FS-G = full screen graphic (no avatar), CS = center stage with orbiting graphics, BR-S/BR-C = bottom-right square/circle, BL-S/BL-C = bottom-left square/circle, SL/SR = side-shifted left/right.
@@ -37,14 +38,14 @@ No mode runs more than 2 consecutive. ✅
 
 | Tool | Count | Segments |
 |---|---|---|
-| Remotion | 8 | 001, 006, 015, 019, 020, 022, 024, 028 |
+| Remotion | 13 | 001, 006, 008, 009, 011, 014, 015, 018, 019, 020, 022, 024, 028 |
 | HyperFrames | 3 | 017, 023, 027 |
-| Motion Canvas | 5 | 008, 009, 011, 014, 018 |
 | ExcaliMotion | 5 | 003, 004, 005, 012, 013 |
 | VHS | 2 | 010, 016 |
 | Playwright | 1 | 021 |
 | Nano Banana still | 2 | 025, 026 |
-| HeyGen-only (no overlay) | 2 | 002, 007 |
+| HeyGen-only (no overlay) | 3 | 002, 007, 029 |
+| ~~Motion Canvas~~ | ~~0~~ | dropped 2026-04-29 — visuals achievable in Remotion, toolchain friction not justified for V8 content |
 
 All 7 palette tools used. ✅
 
@@ -54,11 +55,11 @@ All 7 palette tools used. ✅
 
 ---
 
-### Segment 001 — Hook: the second brain catches itself
+### @Segment 001 — Hook: the second brain catches itself
 
 **Duration:** ~25 sec (~62 words)
 
-**VO:** "Last month I shipped a self-healing wiki. It catches stale pages, broken links, missing topics, and writes the fixes itself. I review and approve. That was Phase 7. But there were three things Phase 7 couldn't do. Two pages contradicting each other. A concept stuck in one wiki when it belonged in another. And me reviewing every tiny fix the system already knew was right. Phase 8 fixed all three."
+**VO:** "Last month we shipped a self-healing wiki. It catches stale pages, broken links, missing topics, and writes the fixes itself. We review and approve. That was Phase 7. But there were three things Phase 7 couldn't do. Two pages contradicting each other. A concept stuck in one wiki when it belonged in another. And us reviewing every tiny fix the system already knew was right. Phase 8 fixed all three."  Hi, I am an avatar for Dr. Terry Byrd.  I will be leading you through this video where we show you how to make your second brain more self-sustaining.
 
 **Composition:** FS (full screen avatar)
 **Tool:** Remotion title card overlaid as quick lower-third reveal at the close
@@ -66,11 +67,11 @@ All 7 palette tools used. ✅
 
 ---
 
-### Segment 002 — Recap: what Phase 7 actually does
+### @Segment 002 — Recap: what Phase 7 actually does
 
 **Duration:** ~25 sec (~62 words)
 
-**VO:** "Quick recap. Phase 7 watches my wikis. When a page goes stale, when a link breaks, when somebody searches for something the wiki doesn't have — Phase 7 notices. Then it spawns a Claude subprocess that drafts the fix. The draft lands in a queue. I review it. I approve it. The wiki updates. That loop has been running for weeks. It works."
+**VO:** "Quick recap. Phase 7 watches our wikis. When a page goes stale, when a link breaks, when somebody searches for something the wiki doesn't have — Phase 7 notices. Then it spawns a Claude subprocess that drafts the fix. The draft lands in a queue. We review it. We approve it. The wiki updates. That loop has been running for weeks. It works."
 
 **Composition:** BR-C (bottom-right circle PiP)
 **Tool:** HeyGen-only — no extra graphics, but the talking-head PiP is overlaid on a Phase 7 architecture screenshot held as the background
@@ -82,7 +83,7 @@ All 7 palette tools used. ✅
 
 **Duration:** ~22 sec (~55 words)
 
-**VO:** "Phase 7 caught problems within a single page. But it never compared pages to each other. It never noticed when one wiki learned something the other wiki should know about. And it asked me to approve everything — even the typo fixes that nobody could disagree with. Three blind spots. Three things to build."
+**VO:** "Phase 7 caught problems within a single page. But it never compared pages to each other. It never noticed when one wiki learned something the other wiki should know about. And it asked us to approve everything — even the typo fixes that nobody could disagree with. Three blind spots. Three things to build."
 
 **Composition:** SR (side-shifted right — avatar on right 1/3, graphic fills left 2/3)
 **Tool:** ExcaliMotion
@@ -92,9 +93,9 @@ All 7 palette tools used. ✅
 3. A queue with a person stamping every single item (icon: 📥 with rubber stamp)
 Each panel labels itself in handwritten font as it draws. Avatar in side-right narrating.
 
----
 
-### Segment 004 — Problem 1: pages that disagree
+
+### $Segment 004 — Problem 1: pages that disagree
 
 **Duration:** ~28 sec (~70 words)
 
@@ -122,7 +123,7 @@ Each panel labels itself in handwritten font as it draws. Avatar in side-right n
 
 **Duration:** ~23 sec (~58 words)
 
-**VO:** "And the queue. Every typo. Every missing link. Every tiny additive change. Sitting there waiting for me to click approve. Phase 7 was risk-averse by design — every change went through me. That was the right call for week one. By month one, it was just noise. I needed the system to handle the obvious stuff itself."
+**VO:** "And the queue. Every typo. Every missing link. Every tiny additive change. Sitting there waiting for us to click approve. Phase 7 was risk-averse by design — every change went through me. That was the right call for week one. By month one, it was just noise. We needed the system to handle the obvious stuff itself."
 
 **Composition:** SL (side-shifted left)
 **Tool:** Remotion
@@ -130,11 +131,11 @@ Each panel labels itself in handwritten font as it draws. Avatar in side-right n
 
 ---
 
-### Segment 007 — Phase 8: three additions
+### @Segment 007 — Phase 8: three additions
 
 **Duration:** ~22 sec (~55 words)
 
-**VO:** "So Phase 8 added three things. One: contradiction detection — the system reads page pairs and flags real disagreements. Two: cross-wiki bridges — when a concept in one wiki becomes relevant to another, the system proposes the link. Three: an auto-apply tier — low-risk changes apply themselves. I only see the ones that need judgment."
+**VO:** "So Phase 8 added three things. One: contradiction detection — the system reads page pairs and flags real disagreements. Two: cross-wiki bridges — when a concept in one wiki becomes relevant to another, the system proposes the link. Three: an auto-apply tier — low-risk changes apply themselves. We only see the ones that need judgment."
 
 **Composition:** FS (full screen avatar — hero moment for the announcement)
 **Tool:** HeyGen-only — but with three subtle Remotion floating numerical badges (1, 2, 3) appearing in sequence behind the avatar at "one," "two," "three" — chrome-cyan, fade in and orbit slightly
@@ -149,8 +150,8 @@ Each panel labels itself in handwritten font as it draws. Avatar in side-right n
 **VO:** "Contradiction detection is the simplest of the three to explain and the hardest to build. Simple to explain: if two pages say opposite things about the same fact, flag it. Hard to build because real contradictions are rarely word-for-word. They're paraphrased. They use different units. They contradict implicitly. String matching catches none of that. So we use an LLM to do the comparison."
 
 **Composition:** BR-C (bottom-right circle)
-**Tool:** Motion Canvas
-**Imagery:** Background: two wiki page rectangles, side by side, with a question mark hovering between them. As VO progresses, the comparison evolves: first a string-match attempt (highlights identical words → mostly empty), then an LLM-style "reading" pass where each page's facts are extracted into bullet points, then the bullet points compared semantically (matching pairs glow green, conflicting pairs glow red). Avatar in bottom-right circle.
+**Tool:** Remotion
+**Imagery:** Two Remotion-rendered wiki page rectangles side by side, with a question mark hovering between them. The comparison evolves in three phases driven by spring physics: (1) string-match attempt — identical words highlight cyan, mostly empty; (2) LLM-style "reading" pass where each page's facts are extracted into bullet points (sequential reveal with stagger); (3) semantic comparison — matching bullet pairs glow green, conflicting pairs glow red. Each phase transitions with a brief crossfade. Avatar in bottom-right circle.
 
 ---
 
@@ -161,8 +162,8 @@ Each panel labels itself in handwritten font as it draws. Avatar in side-right n
 **VO:** "Here's the mechanic. The detector picks page pairs — by topic, by tag, by recent edit. It spawns a Claude subprocess, hands it both pages, and asks one question: do these contradict each other on any factual claim? If yes, what's the conflict, where is it, and which one looks more recently authored? The answer comes back as a structured proposal. Lands in the improvements queue."
 
 **Composition:** SR (side-shifted right)
-**Tool:** Motion Canvas
-**Imagery:** Left 2/3: animated flowchart. Box "Page Pair Selector" → "claude subprocess" (with claude logo) → branching diamond "Contradicts?" → on YES, "Structured Proposal" → "improvements_queue" (database icon). Particles flow along the connections. Each box highlights as the VO mentions it. Word-level highlighting via transcript timestamps. Avatar narrating from the right.
+**Tool:** Remotion
+**Imagery:** Left 2/3: a Remotion-rendered flowchart. Boxes drawn in sequence with spring-physics entrance: "Page Pair Selector" → "claude subprocess" (with Anthropic logo) → branching diamond "Contradicts?" → on YES, "Structured Proposal" → "improvements_queue" (database icon). Animated cyan particle trails flow along connection lines, beat-synced to VO emphasis. Each box pulses cyan when its label is spoken (timing driven by AssemblyAI word timestamps). Avatar narrating from the right.
 
 ---
 
@@ -170,7 +171,7 @@ Each panel labels itself in handwritten font as it draws. Avatar in side-right n
 
 **Duration:** ~30 sec (~75 words)
 
-**VO:** "Let's watch one run. I'm calling the detector against the investments wiki. It picks five page pairs based on tag overlap. It spawns the subprocess. Forty seconds later — there's the result. Two contradictions found. The position-sizing one we talked about, and another one about whether stop-loss percentages should be calculated from entry or from twenty-day low. Both real. Both worth fixing. Proposal lands in queue."
+**VO:** "Let's watch one run. We are calling the detector against the investments wiki. It picks five page pairs based on tag overlap. It spawns the subprocess. Forty seconds later — there's the result. Two contradictions found. The position-sizing one we talked about, and another one about whether stop-loss percentages should be calculated from entry or from twenty-day low. Both real. Both worth fixing. Proposal lands in queue."
 
 **Composition:** BL-C (bottom-left circle — to keep the terminal recording uncluttered on the right)
 **Tool:** VHS
@@ -196,8 +197,8 @@ Avatar in bottom-left circle, 20% width.
 **VO:** "Cross-wiki bridges are the second piece. The premise: knowledge gets siloed in whichever wiki you happened to be working in when you learned it. But concepts overlap. A pattern from AI filmmaking applies to investments. An idea from operations applies to claude code. The bridge detector watches for those overlaps and proposes links."
 
 **Composition:** BR-S (bottom-right square)
-**Tool:** Motion Canvas
-**Imagery:** Background: four labeled blob-clusters representing wikis (Investments / AI Filmmaking / Operations / Claude Code), each with floating concept-tags inside. As VO progresses, two tags from different wikis pulse in unison — "constraint-driven design" (filmmaking) and "position sizing limits" (investments). A glowing bridge link draws between them. Avatar in bottom-right square corner.
+**Tool:** Remotion
+**Imagery:** Four Remotion-rendered blob-clusters at corners of a 1920×1080 layout, each labeled with a wiki name (Investments / AI Filmmaking / Operations / Claude Code). Inside each cluster, ~5 floating concept-tag pills with subtle drift animation. As VO progresses, two tags from different wikis pulse in unison — "constraint-driven design" (filmmaking) and "position sizing limits" (investments) — both glowing cyan. A bridge link with animated cyan particle flow draws between them via spring physics. Avatar in bottom-right square corner.
 
 ---
 
@@ -205,7 +206,7 @@ Avatar in bottom-left circle, 20% width.
 
 **Duration:** ~28 sec (~70 words)
 
-**VO:** "Here's one the system caught. The AI filmmaking wiki had a page on the constraint loop — how limits force creativity. The investments wiki was teaching position sizing as constraint-driven decision-making. Same underlying idea, different vocabulary. The bridge detector noticed the conceptual overlap, drafted a proposal: add a cross-wiki link, here's the suggested anchor text, here's the rationale. I approved it. Took five seconds."
+**VO:** "Here's one the system caught. The AI filmmaking wiki had a page on the constraint loop — how limits force creativity. The investments wiki was teaching position sizing as constraint-driven decision-making. Same underlying idea, different vocabulary. The bridge detector noticed the conceptual overlap, drafted a proposal: add a cross-wiki link, here's the suggested anchor text, here's the rationale. We approved it. Took five seconds."
 
 **Composition:** SR (side-shifted right)
 **Tool:** ExcaliMotion
@@ -213,11 +214,11 @@ Avatar in bottom-left circle, 20% width.
 
 ---
 
-### Segment 013 — The wiki graph after Phase 8
+### @Segment 013 — The wiki graph after Phase 8
 
 **Duration:** ~22 sec (~55 words)
 
-**VO:** "Zoom out. This is the wiki graph before Phase 8 — four wikis, links only within each wiki. And here it is after a few weeks of Phase 8 running. Bridges everywhere. Most of them I didn't write. The system noticed connections I never would have, because I was only ever working in one wiki at a time."
+**VO:** "Zoom out. This is the wiki graph before Phase 8 — four wikis, links only within each wiki. And here it is after a few weeks of Phase 8 running. Bridges everywhere. Most of them we didn't write. The system noticed connections we never would have, because we were only ever working in one wiki at a time."
 
 **Composition:** FS-G (full screen graphic — no avatar visible in this segment)
 **Tool:** ExcaliMotion
@@ -232,8 +233,8 @@ Avatar in bottom-left circle, 20% width.
 **VO:** "Third addition: the auto-apply tier. Phase 7's queue got too noisy because every proposal needed a human click. But not every proposal is a judgment call. Adding a missing link to an existing page? That's not a judgment call. Fixing a typo? Not a judgment call. Restructuring an entire knowledge domain? Definitely a judgment call. Phase 8 sorts proposals by risk and lets the boring ones apply themselves."
 
 **Composition:** BR-C (bottom-right circle)
-**Tool:** Motion Canvas
-**Imagery:** Background: a queue of proposal cards stacking up. As VO progresses, proposals get classified into three buckets that animate in: "LOW RISK (auto-apply)" in green, "MEDIUM (notify)" in yellow, "HIGH RISK (human review)" in red. Cards flow from the queue into the appropriate bucket. Avatar in bottom-right circle.
+**Tool:** Remotion
+**Imagery:** Remotion scene with a stack of proposal cards (left side) animating in via spring entrance. As VO classifies proposals, three labeled buckets fade in across the right side: "LOW RISK (auto-apply)" in green, "MEDIUM (notify)" in yellow, "HIGH RISK (human review)" in red. Individual cards then sequence-shoot from the queue into the appropriate bucket using spring physics, color-shifting to the bucket's hue on arrival. Avatar in bottom-right circle.
 
 ---
 
@@ -241,7 +242,7 @@ Avatar in bottom-left circle, 20% width.
 
 **Duration:** ~30 sec (~75 words)
 
-**VO:** "Here's the actual tier definitions. Low-risk: typo fixes, missing-link additions, format corrections, broken-link replacements when the target obviously exists. These auto-apply. Medium-risk: cross-wiki bridges, additive content where the source is already approved. These auto-apply but I get notified. High-risk: contradiction resolutions, content removal, structural changes, anything touching the methodology pages. These wait for me. The split is roughly seventy percent auto, thirty percent human."
+**VO:** "Here's the actual tier definitions. Low-risk: typo fixes, missing-link additions, format corrections, broken-link replacements when the target obviously exists. These auto-apply. Medium-risk: cross-wiki bridges, additive content where the source is already approved. These auto-apply but we get notified. High-risk: contradiction resolutions, content removal, structural changes, anything touching the methodology pages. These wait for us. The split is roughly seventy percent auto, thirty percent human."
 
 **Composition:** SL (side-shifted left)
 **Tool:** Remotion
@@ -253,7 +254,7 @@ Avatar in bottom-left circle, 20% width.
 
 **Duration:** ~28 sec (~70 words)
 
-**VO:** "Watch the auto-apply runner. It runs every day at noon, after the detector and the drafter have had time to scan and write proposals. For each new proposal, it checks the risk tier. Low-risk ones get applied — git commit, file updated, queue entry marked done. The whole batch finishes in under a minute. Yesterday's run applied seven proposals automatically. I never had to look at any of them."
+**VO:** "Watch the auto-apply runner. It runs every day at noon, after the detector and the drafter have had time to scan and write proposals. For each new proposal, it checks the risk tier. Low-risk ones get applied — git commit, file updated, queue entry marked done. The whole batch finishes in under a minute. Yesterday's run applied seven proposals automatically. We never had to look at any of them."
 
 **Composition:** BR-S (bottom-right square)
 **Tool:** VHS
@@ -278,11 +279,11 @@ Avatar in bottom-right square.
 
 ---
 
-### Segment 017 — All three running together
+### @Segment 017 — All three running together
 
 **Duration:** ~24 sec (~60 words)
 
-**VO:** "Here's what makes this work. The three additions aren't three separate things — they're one loop. The detector finds problems and overlaps. The drafter writes the fixes. The auto-apply tier ships the obvious ones. Then the cycle starts again. Every day. Without me. The wiki gets sharper while I'm asleep."
+**VO:** "Here's what makes this work. The three additions aren't three separate things — they're one loop. The detector finds problems and overlaps. The drafter writes the fixes. The auto-apply tier ships the obvious ones. Then the cycle starts again. Every day. Without us. The wiki gets sharper while we relax."
 
 **Composition:** FS (full screen — act break, hero moment)
 **Tool:** HyperFrames audio-reactive
@@ -297,8 +298,8 @@ Avatar in bottom-right square.
 **VO:** "Here's the architecture. All three pieces live in the agent-sdk repo, under improvements. Contradiction-detector dot ts. Cross-wiki-bridge dot ts. Auto-apply dot ts. They get registered with the existing detectors module and the server-command-center. The auto-apply runner is wired into the scheduler as the daily-auto-apply job. Total new code: about thirty kilobytes. It plugs into Phase 7's existing pipeline without touching the parts that already worked."
 
 **Composition:** SR (side-shifted right)
-**Tool:** Motion Canvas
-**Imagery:** Left 2/3: a Motion Canvas architecture diagram — boxes for `detectors.ts`, `contradiction-detector.ts`, `cross-wiki-bridge.ts`, `auto-apply.ts`, `scheduler.ts`, `server-command-center.ts`. Existing Phase 7 components in muted gray; new Phase 8 components in cyan with glow. Connection lines animate in showing imports and the scheduler wiring. File names labeled clearly. Avatar on right.
+**Tool:** Remotion
+**Imagery:** Left 2/3: a Remotion-rendered architecture diagram. Six labeled file-boxes positioned in a layered layout: `detectors.ts` and `scheduler.ts` and `server-command-center.ts` (Phase 7 base, drawn first in muted gray) → `contradiction-detector.ts`, `cross-wiki-bridge.ts`, `auto-apply.ts` (Phase 8 additions, drawn second in cyan with glow halo). Connection lines animate in via spring physics showing imports and the scheduler wiring. Each box has its filename in monospace font. Subtle particle trails flow along the connection lines. Avatar on right.
 
 ---
 
@@ -306,7 +307,7 @@ Avatar in bottom-right square.
 
 **Duration:** ~24 sec (~60 words)
 
-**VO:** "And here's the daily schedule. At eight AM, the daily reflection runs. Mid-morning, the detector scans the wikis. Through the day, the drafter writes proposals against the queue. At noon, auto-apply takes over and ships everything safe. Evening — I review whatever needs my eye. The whole cycle is on autopilot. I just open the queue once a day."
+**VO:** "And here's the daily schedule. At eight AM, the daily reflection runs. Mid-morning, the detector scans the wikis. Through the day, the drafter writes proposals against the queue. At noon, auto-apply takes over and ships everything safe. Evening — we review whatever needs my eye. The whole cycle is on autopilot. I just open the queue once a day."
 
 **Composition:** SL (side-shifted left)
 **Tool:** Remotion
@@ -330,7 +331,7 @@ Avatar in bottom-right square.
 
 **Duration:** ~28 sec (~70 words)
 
-**VO:** "And here's what it's actually doing. This is my live improvements queue, right now, as I'm recording. Eleven proposals applied automatically in the last seven days — those green ones. Four queued waiting for my review — those yellow and red ones. Two contradictions caught this week, three cross-wiki bridges proposed. The system is running while I'm making this video. It will probably catch something between now and when I publish."
+**VO:** "And here's what it's actually doing. This is our live improvements queue, right now, as we are recording. Eleven proposals applied automatically in the last seven days — those green ones. Four queued waiting for my review — those yellow and red ones. Two contradictions caught this week, three cross-wiki bridges proposed. The system is running while we are making this video. It will probably catch something between now and when we publish."
 
 **Composition:** SR (side-shifted right)
 **Tool:** Playwright capture
@@ -344,7 +345,7 @@ Avatar in bottom-right square.
 
 **Duration:** ~28 sec (~70 words)
 
-**VO:** "Three real examples from this week. Auto-applied: a missing link from the position-sizing page to the methodology page — system noticed I'd referenced methodology three times without ever linking it. Auto-applied: a typo on the AI filmmaking page that misspelled cinematography. And a cross-wiki bridge from the operations wiki to the claude code wiki around context window management. None of these needed me. All three are live."
+**VO:** "Three real examples from this week. Auto-applied: a missing link from the position-sizing page to the methodology page — system noticed we had referenced methodology three times without ever linking it. Auto-applied: a typo on the AI filmmaking page that misspelled cinematography. And a cross-wiki bridge from the operations wiki to the claude code wiki around context window management. None of these needed me. All three are live."
 
 **Composition:** SL (side-shifted left)
 **Tool:** Remotion
@@ -354,11 +355,11 @@ Avatar in bottom-right square.
 
 ---
 
-### Segment 023 — The compounding effect
+### @Segment 023 — The compounding effect
 
 **Duration:** ~26 sec (~65 words)
 
-**VO:** "Here's what excites me about this. Phase 7 made the wiki self-healing. Phase 8 made it self-sharpening. Every fix the system applies makes the next scan slightly more accurate, because there's less noise to filter through. The wiki gets cleaner, which means the contradictions and bridges that surface are higher-signal, which means I trust the auto-apply more. It compounds."
+**VO:** "Here's what excites us about this. Phase 7 made the wiki self-healing. Phase 8 made it self-sharpening. Every fix the system applies makes the next scan slightly more accurate, because there's less noise to filter through. The wiki gets cleaner, which means the contradictions and bridges that surface are higher-signal, which means I trust the auto-apply more. It compounds."
 
 **Composition:** CS (center stage with orbiting graphics — the one center-stage moment, earned by the crescendo content)
 **Tool:** HyperFrames audio-reactive (with Path B AI matting for clean avatar cutout)
@@ -366,7 +367,7 @@ Avatar in bottom-right square.
 
 ---
 
-### Segment 024 — Phase 8 in the bigger arc
+### @Segment 024 — Phase 8 in the bigger arc
 
 **Duration:** ~22 sec (~55 words)
 
@@ -382,7 +383,7 @@ Avatar in bottom-right square.
 
 **Duration:** ~22 sec (~55 words)
 
-**VO:** "Phase 9 is next. I'm integrating a new YouTube channel into JARVIS. Same pattern as the Chris Vermeulen integration — the system pulls the videos, transcribes them, summarizes them, and feeds them into the right wiki. New channel, new domain. We'll talk about the choice in the next video."
+**VO:** "Phase 9 is next. JARVIS already absorbs knowledge from a few different feeds — research documents, docs crawls, and YouTube transcripts. But only one YouTube channel is in the loop right now: Chris Vermeulen for markets. Phase 9 adds a second one. New creator, new domain. The pipeline is already built — pull, transcribe, summarize, route to the right wiki. We'll talk about the channel choice in the next video."
 
 **Composition:** SR (side-shifted right)
 **Tool:** Nano Banana still (with Ken Burns)
@@ -394,7 +395,7 @@ Avatar in bottom-right square.
 
 **Duration:** ~26 sec (~65 words)
 
-**VO:** "Phase 10 is more ambitious. Right now, JARVIS only takes commands from my terminal — I have to be at my desk. Phase 10 turns my Telegram bot into a full remote shell. Same commands I'd run locally, from my phone, anywhere. Build a video. Query the queue. Trigger a market scan. The terminal goes mobile."
+**VO:** "Phase 10 is more ambitious. We already have Telegram connected to JARVIS — but only for a fixed set of commands, mostly investment queries. To run anything else we still have to be at the desk. Phase 10 turns the Telegram bot into a full remote shell. The full set of commands we run locally, from the phone, anywhere. Build a video. Query the wiki queue. Trigger a market scan. The terminal goes mobile."
 
 **Composition:** SL (side-shifted left)
 **Tool:** Nano Banana still (with Ken Burns)
@@ -402,11 +403,11 @@ Avatar in bottom-right square.
 
 ---
 
-### Segment 027 — Vision: a second brain that grows on its own
+### @Segment 027 — Vision: a second brain that grows on its own
 
 **Duration:** ~22 sec (~55 words)
 
-**VO:** "What's the through-line. I'm building a second brain that doesn't need me to maintain it. It captures, it organizes, it heals, it sharpens, and soon it'll listen to YouTube and respond from my phone. Every phase removes one more thing I had to do manually. The goal isn't more features. The goal is less work."
+**VO:** "What's the through-line. We are building a second brain that doesn't need us to maintain it. It captures, it organizes, it heals, it sharpens, and soon it'll listen to YouTube and respond from our phones. Every phase removes one more thing I had to do manually. The goal isn't more features. The goal is less work."
 
 **Composition:** FS (full screen — vision moment, hero)
 **Tool:** HyperFrames audio-reactive
@@ -414,15 +415,27 @@ Avatar in bottom-right square.
 
 ---
 
-### Segment 028 — CTA and what's next
+### Segment 028 — CTA: subscribe, comment, share
 
-**Duration:** ~20 sec (~50 words)
+**Duration:** ~25 sec (~62 words)
 
-**VO:** "If you're building something like this — or wondering if it's possible — subscribe and stick around. Phase 9 lands next, and the videos themselves are getting automated too. Drop a comment with whatever you'd want JARVIS to learn next. I read all of them. I'll see you in the next one."
+**VO:** "If this is the kind of architecture-level AI work you want more of — subscribe and hit the bell. Comment below with the next system you'd want us to dig into. Agent commerce. Alignment. Regulation. Whatever you're building yourself. We read all of them. And share with one friend who's been quietly building their own stack — the bigger this channel grows, the deeper we go on each phase."
 
-**Composition:** BR-C (bottom-right circle — friendly conversational close)
+**Composition:** BR-C (bottom-right circle — friendly conversational close, smaller PiP so the end-card breathes)
 **Tool:** Remotion
-**Imagery:** Background: a Remotion end-card with subscribe button animation (cyan, pulsing), a "next video" thumbnail placeholder on the left, and a comment icon in the middle. Subscribe button gets a satisfying click animation at the word "subscribe." Channel logo bottom-right. Avatar in bottom-right circle, looking direct to camera at the close.
+**Imagery:** Remotion end-card. Subscribe button (cyan, pulsing) front-and-center; a "comment" icon with rotating prompt chips ("agent commerce" / "alignment" / "regulation" / "your own stack"); a "share" arrow pulsing to one side. Subscribe button gets a satisfying click micro-animation on the word "subscribe." Channel logo bottom-right. Avatar in bottom-right circle, looking direct to camera throughout.
+
+---
+
+### Segment 029 — Close: emotional sign-off
+
+**Duration:** ~22 sec (~52 words)
+
+**VO:** "Phase 8 shipped. JARVIS now catches its own contradictions, builds its own bridges, and quietly fixes the obvious things while we relax. Every phase removes one more thing we used to do manually. The system is closer to being its own caretaker every week. We'll see you in the next deep dive."
+
+**Composition:** FS (full screen avatar — final emotional beat, no overlays competing)
+**Tool:** HeyGen-only (no overlay graphics — the avatar carries the moment)
+**Imagery:** Full-screen avatar, direct to camera. No overlay. Slightly softer lighting/treatment than the open if HeyGen settings allow — this is the warm "thanks for watching" close, distinct from the CTA's actionable energy. Hold on the avatar's final beat, fade to black on the cut.
 
 ---
 
