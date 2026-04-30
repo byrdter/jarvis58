@@ -1,490 +1,301 @@
-# Video Production Skill — Byrddynasty Automated Pipeline
+# Video Production Skill — Byrddynasty Long-Form Video Pipeline
 
-**Purpose:** Take a HeyGen render with 1-second silences between scenes and automatically produce a finished Byrddynasty video with multi-tool visual variety — Remotion, HyperFrames, Motion Canvas, ExcaliMotion, VHS terminal recordings, Playwright browser captures, and Nano Banana Pro stills — composed against a talking-head avatar that moves around the frame deliberately for visual rhythm.
+**Purpose:** Take a HeyGen MP4 (with 1-second silences between scenes and any Nano Banana images baked in) and produce a finished Byrddynasty long-form video using a single Remotion project that respects per-segment avatar position.
 
-**Status:**
-- Stages 1–2 (segmentation + transcription) coded in `video-pipeline/scripts/`
-- Stages 3–6 (director, renderer split, PiP composer, assembly) **not yet built** — design locked, implementation pending
-- Director will live as HTTP endpoints in `agent-sdk` (so video builds can be triggered remotely via Phase 10 Telegram terminal)
+**Status:** **PROVEN.** First successful production run was Video 8 (Phase 8: The Second Brain Gets Sharper), shipped 2026-04-30. Reference example lives at `Byrddynasty-Videos/video-8-phase-8/` (or wherever Video 8's project sits).
 
-**Canonical design memory:** `~/.claude/projects/-Users-terrybyrd-Library-CloudStorage-Dropbox-jarvis/memory/project_video_automation_design.md` — read that for the full background; this skill is the actionable distillation.
-
----
-
-## When to use this skill
-
-Read this skill at the start of any task involving:
-- Producing a Byrddynasty long-form video
-- Building, modifying, or debugging the `video-pipeline/` automation
-- Adding a new visual treatment tool
-- Writing prompts or selection logic for the director
-- Changing the talking-head composition modes
-
-Do NOT use this skill for:
-- Short-form 9:16 standalone content → use the local `make-a-video` / `short-form-video` HyperFrames skills directly
-- Channel branding, thumbnails, or YouTube package authoring → that's a separate concern from production
+**Read this skill at the start of any task that involves:**
+- Producing a Byrddynasty long-form video from a HeyGen recording
+- Modifying or extending the Remotion project for a new video
+- Adding a new visual component kind or style
+- Debugging timing, avatar position, or rendering issues
 
 ---
 
-## Pre-production: script + segment plan (do this FIRST)
+## Critical learnings from Video 8 — read these first
 
-Before any HeyGen recording or pipeline run, Claude produces a single document — the **script + segment plan** — that locks both the voiceover AND the visual treatment for every segment. The user reviews and modifies, then records HeyGen from the final script.
+1. **Stay in terminal. Don't hand off to CC Desktop.** Both run on the same Claude model — the "advantage" of CC Desktop was illusory. The disadvantage is that every handoff loses session context, and you end up re-explaining the project state every time. The user said it bluntly: *"It seems since we are communicating directly, the transitions in the videos are smoothly and not so herky-jerky."* Stay in the same terminal session from script through final render.
 
-This step is non-negotiable. Trying to plan visuals after recording HeyGen forces avatar position into whatever HeyGen rendered; planning together means the recording itself can leave room for the chosen composition (e.g. avatar centered with arms loose for orbiting graphics, vs. avatar tight in frame for corner PiP).
+2. **Silence detection alone is unreliable.** ffmpeg `silencedetect` at `d=0.92` will catch in-sentence pauses as false positives, shifting all downstream segment boundaries by one. Always validate with **whisper-cpp word-level transcription** by matching opener phrases. See "Verifying segment boundaries" below.
 
-### Output format
+3. **Avatar position has to be done in Remotion, not HeyGen.** HeyGen renders the avatar in one fixed position per scene; it does NOT automatically reposition the avatar per segment based on the script's composition modes (BR-C, SR, SL, etc.). The Remotion `Main.tsx` orchestrator must scale and position the `<OffthreadVideo>` element per segment via the `getVideoStyle(composition)` function. The Remotion graphic renders BEHIND the video; the video's positioned style is the avatar zone.
 
-One markdown document with **25–30 segments** (the typical Byrddynasty long-form length). Each segment specifies:
+4. **The recording's segment count may not match the script.** Script seg 29 ("Phase 8 shipped...") was merged into seg 28's CTA during Video 8's recording. Verify segment count via Whisper transcription before authoring.
 
-| Field | Description |
-|---|---|
-| **Segment number** | 001, 002, … (sequential, no sub-numbering) |
-| **Title** | 3–5 word descriptive label |
-| **Duration estimate** | Target 20–30 seconds spoken at ~150 wpm → ~50–75 words |
-| **VO (voiceover)** | The actual script text the avatar will read |
-| **Composition** | One of the 8 modes (full screen / center stage / BR-square / BR-circle / BL-square / BL-circle / side-left / side-right) |
-| **Tool** | Remotion / HyperFrames / Motion Canvas / ExcaliMotion / VHS / Playwright / Nano Banana still / HeyGen-only (full screen, no overlay) |
-| **Imagery** | Concrete description: what specifically appears, what animates, what colors, what data/labels/quotes |
-
-### Authoring rules
-
-- **Voice — collective "we" only, never singular "I".** Scripts must use first-person plural pronouns: **we, us, our, ours, ourselves**. Never use **I, me, my, mine, myself**. Contractions follow the same rule: "we're" not "I'm," "we've" not "I've," "we'll" not "I'll," "we'd" not "I'd." The avatar speaks for a collective, not an individual narrator. Viewers should hear a representative voice. This applies to every script for every video — no exceptions, including casual asides ("we sleep fine," "we built this," "we caught it"). Rephrase rather than break the rule.
-- **Composition rotation:** No single composition mode appears more than ~3 times consecutively. Variety in position is as important as variety in tool.
-- **Tool variety:** Aim to use at least 5 of the 7 palette tools across a 28-segment video. Don't use the same tool more than 4–5 times unless content genuinely demands it.
-- **Hero moments** (intro, big reveal, act breaks, outro) → full screen avatar OR full-screen graphic. Reserve these for moments that earn it.
-- **Stills sparingly:** 2–4 Nano Banana stills per video, no more — they're the rest beat against motion-heavy content.
-- **VHS earns its slot:** when the segment talks about "running it," "watching this work," or shows real terminal output, VHS is the answer.
-- **Playwright earns its slot:** when the segment references "the dashboard," "the website," "the GitHub UI," Playwright captures the real thing.
-
-### Storage
-
-Save to: `Byrddynasty-Videos/<episode>/01-script/SCRIPT-AND-PLAN.md`
-
-Project naming convention: `video-NN-<theme>/` (matches Video 7's `video-7-self-improvement/`). For very recent / in-flight episodes the doc may live at the project root before the bin layout is created — that's fine for drafting; move it under `01-script/` once the project bins are set up.
-
-### After script approval — generate HeyGen-bound files
-
-Once Terry signs off on `SCRIPT-AND-PLAN.md`, generate **two outputs** in `01-script/`. They serve different consumers — one is for the human recorder, one is for Claude Code Desktop's HeyGen automation.
-
-**1. `HEYGEN-SCRIPT.md` — combined markdown for human review**
-
-For the recorder to read before / during HeyGen authoring (knows how to frame each scene).
-
-- Header section: source file, status, recording rules (1-second silence, scene-per-segment), parsing instructions
-- One block per segment, in order, separated by `---`
-- Segment header: exactly `## Segment NNN` (3-digit zero-padded)
-- Two labeled fields per segment:
-  - `**Composition:**` — one-line description of avatar position
-  - `**VO:**` followed by the voiceover paragraph
-- Recording notes (e.g. "replace placeholder numbers day-of-recording") as `>` blockquotes below the VO
-
-NOT the file CC Desktop reads — CC Desktop wants per-segment plain text (see below).
-
-**2. `01-script/segments/segment-NNN.txt` — per-segment VO files for CC Desktop**
-
-One file per segment, consumed directly by CC Desktop's HeyGen automation. CC Desktop opens each file, types its contents into the corresponding HeyGen scene's ProseMirror script field.
-
-- **Path:** `01-script/segments/segment-NNN.txt`
-- **Naming:** 3-digit zero-padded (`segment-001.txt` through `segment-NNN.txt`)
-- **Contents:** ONLY the VO text. No titles, no composition labels, no stage directions, no markdown, no leading/trailing whitespace beyond a single trailing newline
-- **Encoding:** plain UTF-8
-
-CC Desktop's full workflow + constraints (ProseMirror requires Chrome MCP tab in foreground; division of labor between CC Desktop and user) is documented in the user-level memory at `~/.claude/.../memory/reference_cc_desktop_heygen_automation.md`. Read that before debugging any CC Desktop issue.
-
-**What to strip when generating both files:** segment titles, duration estimates, tool selection, imagery descriptions. None of that needs to reach HeyGen.
-
-**What to keep verbatim:** the VO text. No paraphrasing or "cleanup" between `SCRIPT-AND-PLAN.md` and either output. If the VO needs changing, change it in the master plan first, then regenerate.
-
-**Regeneration rule:** Any time the VO is edited in `SCRIPT-AND-PLAN.md`, regenerate BOTH `HEYGEN-SCRIPT.md` AND every `segments/segment-NNN.txt` from scratch. Don't keep them in drift.
-
-### After HeyGen recording
-
-User opens HeyGen AI Studio in Chrome, creates a 16:9 project, gives CC Desktop the URL. CC Desktop types the 28 scenes (~15 min). User adds avatars, background images, voice settings, then submits. HeyGen renders the combined MP4. User drops it in `02-heygen/`. Pipeline takes over from stage 1.
+5. **The whole tool palette idea (Remotion + HyperFrames + Motion Canvas + ExcaliMotion + VHS + Playwright + Nano Banana) was over-engineering.** What works is much simpler: **HeyGen audio + baked-in static images + one monolithic Remotion project**. HyperFrames is integratable (see "Adding HyperFrames clips" below) but optional.
 
 ---
 
-## Input contract — the spine
+## Canonical project layout
 
-The pipeline starts from a single HeyGen render. To make automation possible, the HeyGen file MUST conform to this contract:
-
-### Recording rules
-
-1. **Voiceover is continuous** across the whole video — no fade-outs between scenes.
-2. **Exactly 1 second of silence between every scene.** This is the segmentation marker. Without it the pipeline cannot recover boundaries automatically.
-3. **Avatar appears in some scenes, not others** — that's fine. Some segments are voiceover-only (those become Remotion / HyperFrames / Motion Canvas / ExcaliMotion / VHS / Playwright / still backgrounds). Others have the talking head and get composed via PiP.
-4. **No Nano Banana stills embedded in HeyGen** — stills are inserted by automation from a per-video manifest (Option B). Leave those segments as voiceover-only.
-5. **Avatar background is whatever HeyGen renders by default** — no green-screen requirement. The PiP composer crops the avatar to a circle or rounded square; the framing handles separation.
-
-### What the pipeline derives from this input
+Every video lives in `Byrddynasty-Videos/<episode>/` with this structure:
 
 ```
-HeyGen render (.mp4)
-   │
-   ├─► [1] segment-timings.json    via ffmpeg silencedetect
-   ├─► [2] transcript.json (word-level)  via AssemblyAI Universal-2
-   └─► (used directly for avatar PiP extraction in stage 5)
-```
-
-### Segmentation command (stage 1)
-
-```bash
-ffmpeg -i raw-heygen.mp4 -af silencedetect=n=-50dB:d=1.0 -f null - 2>&1 | grep silence
-```
-
-The `video-pipeline/scripts/auto-edit.sh` wrapper is the canonical entry point for this stage in production runs.
-
-### Transcription (stage 2)
-
-```bash
-bun run video-pipeline/scripts/transcribe.ts <segments-tightened.mp4> <out-dir>
-```
-
-Outputs `transcript.json` with word-level timestamps in whisper.cpp shape. AssemblyAI Universal-2 costs ~$0.08 for a 12-minute video.
-
----
-
-## Tool palette — variety is the goal
-
-The director picks one tool per voiceover-only segment. Each tool produces a visually distinct treatment so the finished video has rhythm and surprise.
-
-| Tool | Best for | Where it lives |
-|---|---|---|
-| **Remotion** | Title cards, bullet lists, stats dashboards, text-heavy slides, video compositing, `createTikTokStyleCaptions` | `Byrddynasty-Videos/<ep>/remotion-project/` |
-| **HyperFrames** | Audio-reactive scenes, animated text highlighting (sweeps / scribbles / hand-drawn circles / burst lines), scene transitions, 9:16 short-form variants for repurposing | Global skills (`~/.agents/skills/hyperframes*`, `gsap`, `website-to-hyperframes`) + Nate Herk student kit at `hyperframes-experiments/hyperframes-student-kit/` |
-| **Motion Canvas** | Diagrams, network graphs, sequential builds with particle flow, code displays with syntax highlighting, transformation flows (A → B → C), math/LaTeX | `Byrddynasty-Videos/<ep>/motion-canvas-project/` |
-| **ExcaliMotion** | Hand-drawn / sketched-feel diagrams, "draws itself in" reveals, animations sourced from existing Excalidraw `.excalidraw` files | Used in Video 7 production; render via the `excalidraw-diagram` local skill (Playwright-backed) + animation pass |
-| **VHS** (Charm) | Real terminal sessions — `claude` running, scripts executing, JARVIS in action, recorded as scripted `.tape` files producing MP4 or GIF | Install: `brew install vhs`. Scripts checked into the project's `07-vhs/` bin |
-| **Playwright + Claude** | Browser captures — real websites, dashboards, GitHub UI, live app demos, scrolling reveals, click sequences | Available via the `excalidraw-diagram` skill's Playwright; generally usable for any URL |
-| **Nano Banana Pro stills** | Static images, a few per video, brand-consistent illustrations — the only static treatment in the mix | Image generator + per-video `stills-manifest.json` |
-
-### Tool selection logic — pure content-driven
-
-The director picks per segment based on voiceover content. **No hard tool budgets.** Variety emerges from the content being varied, not from quotas.
-
-Routing heuristics (the director prompt encodes these):
-
-| Voiceover signal | Route to |
-|---|---|
-| "as you can see in the diagram", "this loop", "the architecture" | ExcaliMotion or Motion Canvas |
-| "watch this run", "let's run it", "in my terminal", "here's the command" | VHS |
-| "the website", "the dashboard", "the UI", "go to GitHub", "this app" | Playwright capture |
-| "key takeaways", "three things", "the numbers", "X percent" | Remotion (bullets / stats) |
-| "from X to Y", "transitions to", "becomes", "evolves into" | Motion Canvas transformation flow |
-| "this is exciting", "the moment", emphasis-heavy lines | HyperFrames audio-reactive emphasis |
-| Reflective / philosophical / "the big picture" | Nano Banana still (per stills-manifest) with Ken Burns |
-
-When the segment doesn't match any signal, default to **Remotion** for text-driven content or **Motion Canvas** for explanation-driven content.
-
----
-
-## Talking-head composition modes
-
-The avatar is **not** restricted to intro/outro full-screen plus a static bottom-right PiP. It moves around the frame deliberately.
-
-### The 8 modes
-
-| # | Mode | Description | When to use |
-|---|---|---|---|
-| 1 | **Full screen** | Avatar fills 1920×1080, no overlay graphics | Intro, outro, hero moments, direct emotional beats |
-| 2 | **Center stage with orbiting graphics** | Avatar front-and-center; motion graphics enter from edges and animate around them as they speak | Explaining a concept where the avatar IS the focal point. **Requires Path B (AI matting) for clean background removal — see PiP composition below.** |
-| 3 | **Bottom-right PiP, square** | 20% width, sharp rounded corners, drop shadow | Default narrator-over-visuals mode |
-| 4 | **Bottom-right PiP, circle** | 20% width, circular crop | Personal / conversational beats |
-| 5 | **Bottom-left PiP, square** | Mirror of #3 | When important graphic / text content is on the right |
-| 6 | **Bottom-left PiP, circle** | Mirror of #4 | Same as #5 but friendlier |
-| 7 | **Side-shifted left (1/3 left, 2/3 right)** | Avatar holds left third; graphic fills right two-thirds | Graphic enters from the right; avatar "presents" it leftward |
-| 8 | **Side-shifted right (2/3 left, 1/3 right)** | Mirror — graphic on left, avatar on right | Graphic enters from the left |
-
-### Position selection logic
-
-The director picks a composition mode per segment based on:
-
-1. **Reading order** — English LTR, eyes scan left to right, so important graphics often go right while avatar holds left.
-2. **Entry direction** — If the segment's graphic slides in from the right, avatar shifts left (and vice versa) to avoid collision.
-3. **Reference direction** — If avatar gestures or refers to "this" / "here" / "look at this", the graphic appears on the side they reference.
-4. **Variety budget** — No single position holds for more than ~3 consecutive segments. Rotate to keep visual rhythm. (The director enforces this even though tool selection is content-driven — composition rotation is a soft variety lever, not tool quotas.)
-5. **Tool constraints** — Mode #2 (center stage) requires the avatar be cleanly extracted, which costs more (see Path B below). Use sparingly: only when the segment genuinely benefits from graphics flowing behind the avatar.
-
-### Avatar PiP specs (modes 3–8)
-
-- **Width:** 20% of canvas (~384px at 1080p) for corner PiPs (3–6); ~33% for side-shifted (7–8)
-- **Padding from edges:** 20px (corner PiPs)
-- **Border:** 2px cyan `#00D4FF` (optional but consistent with brand)
-- **Shadow:** subtle drop shadow for separation from underlying graphic
-- **Safe zone:** keep important graphic content in the 80% of frame *not* covered by the avatar PiP (or the empty 2/3 in side-shifted modes)
-
----
-
-## Static images — Nano Banana Pro (Option B, manifest-driven)
-
-A few static stills appear in every video for variety against the motion-heavy tool mix. Stills are **not** embedded in the HeyGen render — they are inserted by the pipeline from a per-video manifest.
-
-### Manifest format — `stills-manifest.json`
-
-```json
-{
-  "segment_006": {
-    "image_path": "stills/markets-overview.png",
-    "ken_burns": {
-      "start_box": [0.0, 0.0, 1.0, 1.0],
-      "end_box":   [0.15, 0.10, 0.85, 0.90],
-      "easing": "ease-in-out"
-    },
-    "talking_head_mode": "side_shifted_right"
-  },
-  "segment_014": {
-    "image_path": "stills/dashboard-mockup.png",
-    "ken_burns": {
-      "start_box": [0.10, 0.0, 1.0, 0.85],
-      "end_box":   [0.0, 0.15, 0.90, 1.0],
-      "easing": "linear"
-    },
-    "talking_head_mode": "full_screen"
-  }
-}
-```
-
-- `start_box` / `end_box` are normalized [x1, y1, x2, y2] crop rectangles for Ken Burns pan-and-zoom. `[0,0,1,1]` is "no zoom, full frame."
-- `talking_head_mode` lets a still be paired with any composition mode — including full screen (still becomes the entire scene, no avatar) or side-shifted (avatar on one side, still Ken-Burnsing on the other).
-
-The director consults this manifest first; segments listed here bypass tool selection and route directly to the stills renderer.
-
----
-
-## Pipeline architecture
-
-```
-HeyGen render (.mp4 with 1s silences, no embedded stills)
-        │
-        ▼
-[1] ffmpeg silencedetect          ──►  segment-timings.json
-        │                                      │
-        ▼                                      ▼
-[2] AssemblyAI Universal-2        ──►  transcript.json (word-level)
-    on HeyGen audio
-        │                                      │
-        └──────┬───────────────────────────────┘
-               ▼
-[3] Director  (HTTP endpoint in agent-sdk)
-    Inputs:  segment-timings.json
-             transcript.json
-             stills-manifest.json (per-video)
-             channel-style.md (visual library + brand)
-    Output:  plan.json
-             [{segment, start, end, tool, treatment, talking_head_mode, payload}]
-        │
-        ▼
-[4] Renderer split (parallel where possible):
-        • Remotion          → bg.mp4 per segment
-        • HyperFrames       → bg.mp4 per segment
-        • Motion Canvas     → bg.mp4 per segment
-        • ExcaliMotion      → bg.mp4 per segment
-        • VHS               → bg.mp4 per segment
-        • Playwright        → bg.mp4 per segment
-        • Stills + Ken Burns → bg.mp4 per segment
-        │
-        ▼
-[5] PiP composer
-    Per segment:
-      - If talking_head_mode == "full_screen" → use HeyGen segment as-is (no bg overlay)
-      - Else: composite avatar (cropped/masked per mode) onto the bg.mp4 from stage 4
-        • Path A (modes 3–8): circle/rounded-square crop with border + shadow
-        • Path B (mode 2 only): AI matting (RVM / MediaPipe / BackgroundMattingV2) for true cutout
-        │
-        ▼
-[6] Caption burn-in + assembly
-    Captions: HyperFrames karaoke OR Remotion createTikTokStyleCaptions, driven by transcript.json
-    Concat:   ffmpeg concat with audio normalization to -14 LUFS
-        │
-        ▼
-final-video.mp4
-```
-
-### PiP composition — Path A (default)
-
-Used for talking-head modes 3–8 (every PiP and side-shifted mode). The HeyGen avatar comes with its background; we crop to a circle or rounded square and frame it. The frame's border + shadow does the visual separation. Implementation: ffmpeg with an alpha-mask PNG or `geq` filter for the circle case; rounded-rect via `crop` + alpha overlay.
-
-**Cost:** near-zero, fully ffmpeg-local.
-
-### PiP composition — Path B (center-stage only)
-
-Used **only** for talking-head mode 2 (center stage with orbiting graphics) where graphics need to flow behind the avatar without showing the HeyGen background. Run an AI matting pass per segment to extract the avatar with a clean alpha channel.
-
-Candidate models: RVM (Robust Video Matting), MediaPipe Selfie Segmentation, BackgroundMattingV2.
-
-**Cost:** GPU/CPU pass per center-stage segment. Reserve mode 2 for genuinely-justified uses to keep cost low.
-
-### Director hosts in agent-sdk
-
-The director is **not** a standalone CLI. It runs as HTTP endpoints on the existing `agent-sdk` server (port 3000):
-
-- `POST /video/plan` — body: paths to segment-timings + transcript + stills-manifest. Returns plan.json.
-- `POST /video/build` — body: video id + paths. Triggers full pipeline. Long-running; return 202 immediately, write status to DB.
-- `GET /video/status/:id` — current build state.
-
-Long-running renders use the same subprocess pattern as the drafter: Bun `idleTimeout` ≥ 255s; check status via DB rather than polling HTTP. Auth piggybacks on whatever Phase 10 (Telegram terminal) establishes — meaning a Telegram message like `/build-video ep-08` is the eventual remote trigger.
-
----
-
-## Bin convention — canonical directory layout
-
-Every video project follows this structure (proven in Video 7 manual production, formalized for automation):
-
-```
-Byrddynasty-Videos/<episode>/
-├── 01-script/                  # script.md, voiceover-prompt.md, stills-manifest.json
-├── 02-heygen/                  # raw-heygen.mp4 + any HeyGen scratch files
-├── 03-remotion/                # Remotion project + per-segment MP4 outputs
-├── 04-hyperframes/             # HyperFrames project + per-segment MP4 outputs
-├── 05-motioncanvas/            # Motion Canvas project + per-segment MP4 outputs
-├── 06-diagrams/                # ExcaliMotion .excalidraw sources + animated MP4s
-├── 07-vhs/                     # .tape scripts + recorded MP4/GIF outputs
-├── 08-playwright/              # browser-capture scripts + recorded MP4 outputs
-├── 09-stills/                  # Nano Banana PNGs referenced by stills-manifest.json
+video-N-<theme>/
+├── 01-script/
+│   ├── SCRIPT-AND-PLAN.md          # master script + segment plan (composition, tool, imagery per segment)
+│   ├── VO-ONLY.md                  # clean voiceover-only document for HeyGen recording
+│   ├── IMAGE-PROMPTS.md            # Nano Banana prompts for static-image segments
+│   └── (optional) REMOTION-PRODUCTION-PROMPT.md  # only if using CC Desktop — skip if staying in terminal
+├── 02-heygen/
+│   ├── heygen-source.mp4           # the recorded HeyGen video (1920×1080, 25fps, ~1s silences between scenes)
+│   └── _OLD_*.mp4                  # any superseded recordings (keep as backup)
+├── 09-stills/                      # Nano Banana PNGs for image segments
+│   ├── 002-segment.png
+│   ├── 013-segment.png
+│   └── ...
+├── 03-remotion/                    # Remotion project — the heart of the pipeline
+│   ├── public/
+│   │   └── heygen-source.mp4       # symlink or copy of 02-heygen/heygen-source.mp4
+│   ├── src/
+│   │   ├── index.ts
+│   │   ├── Root.tsx                # Composition registry (durationInFrames, fps, 1920×1080)
+│   │   ├── Main.tsx                # ★ orchestrator with getVideoStyle(composition) — the most important file
+│   │   ├── segmentContent.ts       # segments array — content per segment (kind, style, data, composition, timing)
+│   │   ├── types.ts
+│   │   └── compositions/
+│   │       ├── AnimatedText.tsx    # 3 styles (title / body / highlight)
+│   │       └── customSegments.tsx  # 19 specialized component kinds (NumberedBadges, WikiConflict, Flowchart, etc.)
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── out/
+│       └── video.mp4               # final render
 └── 10-output/
-    ├── segment-timings.json
-    ├── transcript.json
-    ├── plan.json
-    ├── per-segment-final/      # post-PiP composite, per segment
-    ├── captions.mp4
-    └── final-video.mp4
+    └── segment-timings.json        # corrected boundaries from whisper-cpp
 ```
 
-The director's plan.json points at exact paths in `03–09/` for renderer outputs and at `02-heygen/` for the avatar source.
+---
+
+## End-to-end workflow
+
+### 1. Write the script + segment plan
+
+`01-script/SCRIPT-AND-PLAN.md` — for each segment, specify:
+- **Segment number, title, duration estimate, voiceover text**
+- **Composition** (FS / FS-G / BR-C / BR-S / BL-C / BL-S / SL / SR / CS — see vocabulary below)
+- **Imagery** — what the graphic shows (or "image" if it's a static segment)
+
+Authoring rules:
+- Voice: collective "we" only — never "I". (Avatar speaks for a collective, not one person.) Contractions follow: "we're", "we've", etc.
+- Final two segments: **CTA** (Subscribe/Comment/Share) + **emotional close**. Can be merged in HeyGen recording (V8 did this), but plan them as two distinct segments in the script.
+- Static images sparingly: 4–7 per long-form video is typical. Reserve for diagrams, roadmaps, dense reference images. Motion-graphics is the default.
+
+### 2. Generate Nano Banana image prompts (for image segments)
+
+For each segment marked as a static image:
+- Write a detailed prompt (`01-script/IMAGE-PROMPTS.md`) with brand palette, exact text labels, layout instructions
+- Specify: 1920×1080 landscape, Byrddynasty colors (`#0F172A` navy / `#00D4FF` cyan / `#FFD700` gold / `#FFFFFF` white)
+- Save outputs to `09-stills/NNN-segment.png` (3-digit segment number, the user's preferred convention)
+
+User generates the images in Nano Banana Pro and drops them in `09-stills/`.
+
+### 3. Generate VO-only document (for HeyGen recording)
+
+`01-script/VO-ONLY.md` — strip everything except the voiceover text. One block per segment. Header reminds the recorder of:
+- Exactly 1 second of silence between every segment (this is non-negotiable — it's the segmentation marker)
+- One segment at a time, in order
+
+### 4. User records HeyGen with images baked in
+
+User opens HeyGen, creates a 16:9 project, records the 28–29 segments with the static images placed on the segments that need them. HeyGen renders to MP4. User drops the MP4 in `02-heygen/heygen-source.mp4`.
+
+### 5. Detect timings — silence detection PLUS Whisper validation
+
+```bash
+# Initial silence detection (will have false positives — don't trust alone)
+ffmpeg -i 02-heygen/heygen-source.mp4 -af silencedetect=n=-50dB:d=0.92 -f null - 2>&1 | grep silence_start
+```
+
+Then validate with whisper-cpp:
+
+```bash
+# Extract audio
+ffmpeg -i 02-heygen/heygen-source.mp4 -ar 16000 -ac 1 -c:a pcm_s16le -y /tmp/audio.wav
+
+# Transcribe with word-level timestamps
+whisper-cli -m ~/.whisper-models/ggml-base.en.bin -f /tmp/audio.wav --output-json --output-file /tmp/transcript -ml 1
+```
+
+Then write a Python script that maps script segment opener phrases ("Quick recap", "Phase 7 caught", "Here's a real one", etc.) to actual timestamps in the transcript. **The Whisper-derived starts are the source of truth.** Ignore silence boundaries that don't correspond to a script-segment opener — those are in-sentence pauses that ffmpeg misclassified.
+
+Whisper transcription gotchas:
+- Numbers may render as words: "phase eight" not "phase 8"
+- Contractions split: "Here's" → "Here" + "'s" — strip apostrophes when matching
+- Match on the first 3-5 distinctive words of each segment opener
+
+Write the corrected `10-output/segment-timings.json` with 28–29 entries (matching the actual recording, not the script).
+
+### 6. Author / update the Remotion project
+
+If this is a **new flavor** of video (e.g., first Phase-9 video), copy `video-8-phase-8/03-remotion/` as a starting template, then update:
+- `Root.tsx` — `TOTAL_FRAMES = ceil(totalDuration * fps)`
+- `segmentContent.ts` — entries for each segment (kind, style, data, composition, timing)
+- (rarely) `customSegments.tsx` — add a NEW component kind only if no existing kind fits
+
+If this is a **subsequent video** of an established flavor, just update `segmentContent.ts` with new content + timings.
+
+`Main.tsx` should usually need NO modification — its `getVideoStyle(composition)` table handles all 9 composition modes already.
+
+### 7. Test render a couple of segments first
+
+```bash
+cd 03-remotion
+npx remotion render src/index.ts Main out/test-segN.mp4 --frames=START-END --concurrency=4
+```
+
+Pick a non-trivial segment (e.g., a side-shifted one + an image segment). Verify:
+- Avatar position respects composition mode
+- Graphic doesn't collide with avatar zone
+- Image segments pass through cleanly with no Remotion overlay
+
+### 8. Full render
+
+```bash
+cd 03-remotion
+rm -f out/video.mp4
+npx remotion render src/index.ts Main out/video.mp4 --concurrency=4
+```
+
+Takes 30–60 minutes for a 13-minute video on Apple Silicon. Run in background.
+
+### 9. Spot-check the final render
+
+Extract frames at key timestamps (one per composition type) into a contact sheet, review, and iterate. Common iteration: tweak component sizing, kill unwanted overlays, adjust labels.
 
 ---
 
-## Quality bar — push Remotion and HyperFrames to their limits
+## The composition mode → avatar position vocabulary
 
-When the director picks Remotion or HyperFrames, the ceiling should be high. Default to "advanced compositions, not beginner templates."
+This is the contract `Main.tsx::getVideoStyle()` implements. Every voiceover segment's `composition` field maps to an `<OffthreadVideo>` style. Any new composition mode requires updating `getVideoStyle`.
 
-The director prompt encodes this bias:
+| Composition | Avatar render | Graphic area |
+|---|---|---|
+| `FS` | Full 1920×1080 | None — graphic only renders if `kind` is in `FS_GRAPHIC_ON_TOP_KINDS` (lower-third, badges, etc.) |
+| `FS-G` | Hidden (`display: none`) | Full 1920×1080 — image-only segment |
+| `BR-C` | 384×384 circle PiP, bottom-right, 20px from edges, 3px cyan border | Whole frame except bottom-right ~420×420 |
+| `BR-S` | Same as BR-C but rounded square (24px radius) | Same |
+| `BL-C` / `BL-S` | Mirror of BR-C/BR-S to bottom-left | Whole frame except bottom-left ~420×420 |
+| `SL` | 640×1080, left third | Right two-thirds (x=640..1920) |
+| `SR` | 640×1080, right third | Left two-thirds (x=0..1280) |
+| `CS` | 600×900 centered (top=90, left=660) with rounded corners | Around the center column — corners and edges only |
 
-- **Data segments** — not just bar charts. Animated reveals with axis-build, value-counting, emphasis pulses, color-coded zones.
-- **Diagram segments** — not just static nodes. Sequential builds, particle flow on connections, glow on the active node, depth/parallax.
-- **Title cards** — not just text-fade-in. Layered entrances with stagger, depth, motion blur, particle accents.
-- **Audio-reactive moments** — genuine beat-synced motion, not decorative pulses. Use the HyperFrames audio-reactive primitives.
-- **Transitions between segments** — leverage HyperFrames scene transitions (crossfades, wipes, reveals, shader transitions) rather than hard cuts.
-
-Mastery references to keep on hand (work-in-progress — pin in `video-pipeline/director/references/`):
-
-- **Remotion docs** (`https://www.remotion.dev/docs`) — animations, spring physics, sequence/timeline, video compositing, `<Sequence>`, `<Audio>`, dynamic durations, transitions, server-side rendering, `createTikTokStyleCaptions`
-- **HyperFrames + GSAP** local skills (`~/.agents/skills/hyperframes*`, `gsap`, `website-to-hyperframes`) — audit these for advanced-technique coverage; particularly audio-reactive scenes, scene transitions, animated text highlighting, face-mode 4-layer scaffold
-- **Nate Herk YouTube videos** (URLs to be re-captured) — already the source for HyperFrames + Remotion automation patterns. Two videos watched as reference; the `hyperframes-student-kit` repo is his companion code.
-- **Search terms for ceiling-pushers**: "Remotion advanced animation", "Remotion timeline composition", "Remotion product demo", "HyperFrames audio reactive", "HyperFrames advanced techniques", "Remotion vs After Effects"
-- Save findings to `video-pipeline/director/references/youtube-references.md` with title + URL + 2-3 line technique note.
+For image segments (`type: 'image'`), the avatar scaling is irrelevant — Remotion just plays the HeyGen MP4 full-screen and renders no overlay (the image is already baked into the video).
 
 ---
 
-## Brand and animation defaults
+## Component library — what exists (no need to rebuild)
 
-### Colors (Byrddynasty)
+`AnimatedText.tsx` provides 3 visual styles:
+- **title** — purple/blue gradient, cyan text, diagonal grid, 30 particles, corner brackets. For phase intros, hero moments.
+- **body** — dark navy gradient, white text, vertical grid, 20 particles, side accent line. For explanations.
+- **highlight** — teal/green gradient, gold text, dual grid, 30 gold particles, geometric corners. For key takeaways, lists, stats.
 
+`customSegments.tsx` provides 19 specialized component kinds (V8 used all of them):
+
+| Kind | Used for | Example segment in V8 |
+|---|---|---|
+| `lower-third` | TV-bug-style title sweep at end of FS segment | Seg 1 (PHASE 8 lower-third) |
+| `numbered-badges` | One-of-three numbered points appearing left-side, replacing previous | Seg 7 (Phase 8: three additions) |
+| `wiki-conflict` | Two wiki page mockups + lightning bolt + CONTRADICTION | Seg 4 (pages disagree) |
+| `silo-bridge` | Two clouds of concepts + dashed-line bridge that completes | Seg 5 (knowledge silos) |
+| `queue-list` | Scrolling list of color-coded queue items (red/yellow/green) | Seg 6 (queue full of obvious fixes) |
+| `three-phase` | Three-phase animated reveal (string-match → LLM read → semantic match) | Seg 8 (contradiction concept) |
+| `flowchart` | Boxes connected with cyan particle trails, branching diamond | Seg 9 (how it works) |
+| `terminal` | Mock-terminal recording with monospace cyan-on-dark, scrolling | Seg 10, 16 (demos) |
+| `bridge-clusters` | Four wiki clusters at corners + cross-cluster bridge animation | Seg 11 (cross-wiki concept) |
+| `sketched-bridge` | Two sketched-feel cards with hand-drawn highlight circles + arc between them | Seg 12 (bridge example) |
+| `card-sort` | Stack of proposal cards animating into LOW/MEDIUM/HIGH risk buckets | Seg 14 (auto-apply concept) |
+| `risk-table` | Three-row table with color bands + stacked bar showing % split | Seg 15 (risk tiers detail) |
+| `loop-diagram` | Three-node circular loop with audio-reactive node pulses (DEPRECATED — V8 didn't use; was removed in seg 17) | (removed) |
+| `daily-timeline` | Horizontal timeline with time markers + icons | Seg 19 (daily schedule) |
+| `cost-dashboard` | Big numerals with counting animation + dollar particles | Seg 20 (cost) |
+| `live-queue` | Mock app UI with URL bar, filter pill, queue rows, hover effects | Seg 21 (live queue) |
+| `apply-cards` | Three vertical card reveals with title + fields + AUTO-APPLIED badge | Seg 22 (specific examples) |
+| `orbiting` | Avatar centered, four large icons + labels orbiting around (CS composition) | Seg 23 (compounding effect) |
+| `verb-sweeps` | Faint verbs sweep across at low opacity over avatar | Seg 27 (vision close) |
+| `end-card` | SUBSCRIBE button + comment chips + SHARE arrow | Seg 28 (CTA) |
+| `none` | No graphic — pure FS avatar | Seg 17, 29 (hero/close moments) |
+
+**Adding a new kind:** create a new exported React component in `customSegments.tsx`, add a `case` to `renderSegment()` in `Main.tsx`, add the kind name to the `SegmentSpec` union in `types.ts`. If it's an FS segment with the graphic on top (rare), also add the kind to `FS_GRAPHIC_ON_TOP_KINDS` in `Main.tsx`.
+
+---
+
+## Brand defaults
+
+**Colors:**
 - Background dark navy `#0F172A`
 - Primary cyan `#00D4FF`
 - Secondary gold `#FFD700`
-- Success green `#00FF88`
-- Warning orange `#FF6B35`
-- Error red `#FF3333`
+- Success green `#10B981`
+- Warning yellow `#F59E0B`
+- Error red `#EF4444`
 - Text white `#FFFFFF`
 
-### Animation timing
+**Spring physics defaults:**
+```typescript
+title:     { damping: 15, stiffness: 100, mass: 1 }
+body:      { damping: 20, stiffness: 80,  mass: 1 }
+highlight: { damping: 12, stiffness: 120, mass: 1 }
+```
 
-- **Entrance:** 0.8–1.2s
-- **Hold:** remainder of segment
-- **Exit:** 0.5s
-- **Sequential delays:** 0.2–0.4s between items
-- **Spring physics** for natural feel; ease-out for entrances; ease-in for exits
-
-### Typography (text-heavy treatments)
-
-- Main titles 100–156px
-- Subtitles 56–72px
-- Body text 48–72px
-- Supporting text 36–52px
-- Minimum readable on mobile: 48px
+**Animation timing:**
+- Entrance: first 1.0–1.2s of segment (spring physics)
+- Hold: middle (continuous animations — particles, grid drift, glow pulses)
+- Exit: last 0.5s (scale + fade)
 
 ---
 
-## Reference repos cloned to disk
+## Adding HyperFrames clips (optional, when needed)
 
-| Repo | Path | Origin |
+For effects HyperFrames does well that Remotion struggles with — hand-drawn scribble reveals, audio-reactive beat-sync, sketched-feel diagrams:
+
+1. Render the HyperFrames composition standalone to MP4 (`npx hyperframes render` in a HyperFrames project)
+2. Drop the MP4 into `03-remotion/public/clips/segment-NN-hyperframes.mp4`
+3. In `segmentContent.ts`, set `kind: 'hyperframes-clip'` with `data: { src: 'clips/segment-NN-hyperframes.mp4' }`
+4. Add a `HyperFramesClip` component to `customSegments.tsx` that renders the clip via `<OffthreadVideo>` over the appropriate area (full-screen for FS-G, side-third for SL/SR, etc.)
+5. Add a `case 'hyperframes-clip'` to `renderSegment()` in `Main.tsx`
+
+Treat HyperFrames as additive. Default to Remotion components; reach for HyperFrames only when a specific segment genuinely needs it.
+
+---
+
+## Common gotchas (debug recipes)
+
+| Symptom | Likely cause | Fix |
 |---|---|---|
-| HyperFrames student kit (Nate Herk) | `hyperframes-experiments/hyperframes-student-kit/` | `nateherkai/hyperframes-student-kit` |
-| Long-form video generator | `repos/VIDEO-GENERATOR_FOUNDATIONS/` | `byrdter/VIDEO-GENERATOR_FOUNDATIONS` |
-| Long-form video generator (sister) | `repos/LONGFORM-VIDEO-GENERATOR/` | `byrdter/LONGFORM-VIDEO-GENERATOR` |
-
-The two `VIDEO-GENERATOR_*` repos are documentary-style stills-and-Ken-Burns generators (Edge TTS + Gemini) — useful as reference for the stills + Ken Burns path in stage 4 and for the long-form orchestration pattern.
-
----
-
-## Current implementation status (2026-04-25)
-
-| Stage | Status | Where |
-|---|---|---|
-| 1 — Segmentation | ✅ Working | `video-pipeline/scripts/auto-edit.sh` |
-| 2 — Transcription | ✅ Working | `video-pipeline/scripts/transcribe.ts` |
-| 3 — Director | ❌ Not built | Will live as HTTP endpoint in `agent-sdk` |
-| 4 — Renderer split | ⚠️ Partial — Remotion / Motion Canvas projects exist per-video; no per-tool dispatcher yet | `Byrddynasty-Videos/<ep>/` |
-| 5 — PiP composer | ❌ Not built | Path A is ffmpeg-only (small); Path B needs matting model selection |
-| 6 — Caption + assembly | ❌ Not built | Captions via HyperFrames or Remotion `createTikTokStyleCaptions`; concat via ffmpeg |
-
-**Adjacent:** `AUTOMATED-VIDEO-PIPELINE-PLAN.md` (project root) describes a parallel "raw take" input mode (you record yourself talking to camera, no HeyGen). That mode shares stages 2–6 with this skill — only stage 1's input differs. Treat it as an alternate entry point, not a replacement.
+| Remotion graphic landing on Nano Banana image segment | Image segment not classified `type: 'image'` in segmentContent | Verify type field; image segments need `kind: 'none'` and `type: 'image'` |
+| Avatar covered by Remotion graphic on every segment | `Main.tsx` `getVideoStyle()` not respecting composition; or `<OffthreadVideo>` rendered before graphic | Verify graphic renders FIRST (background), `<OffthreadVideo>` SECOND (on top, positioned per `getVideoStyle`) |
+| Segment N+1's graphic appears during segment N's image | Silence detection false positive (in-sentence pause caught as boundary), shifting all downstream timings | Re-run with whisper-cpp + opener-phrase matching; rebuild `segment-timings.json` |
+| Avatar looks tiny in PiP showing room/desk visible | Expected — HeyGen renders avatar full-screen; PiP scaling shrinks the whole frame proportionally. Live with it or instruct user to record HeyGen with avatar tighter in frame |
+| Number/icon overlapping avatar's face | The overlay layout was designed assuming avatar is in a corner, but avatar is full-screen because composition is FS | Reposition to LEFT or RIGHT side at mid-height (see V8 seg 7's NumberedBadges fix) |
+| Text "very light" or hard to read | Opacity too low (<0.6), or color too close to background. | Bump to opacity 1.0, add `textShadow` with strong contrast, increase fontSize |
+| Render time too long | Default concurrency=1 | Use `--concurrency=4` (or higher on bigger machines) |
 
 ---
 
-## Quick reference — common commands
+## Realistic cadence
 
-### Smoke-test stages 1–2 on any MP4
+| Phase | Time per video |
+|---|---|
+| Script + segment plan | 1–2 hr |
+| Image prompts + generation (Nano Banana) | 30–60 min |
+| HeyGen recording + image bake-in | 30–60 min |
+| Whisper transcription + timing JSON | 5–10 min (automated in same session) |
+| Remotion authoring (mostly content updates) | 15–30 min |
+| Test render + full render | 30–60 min |
+| Spot-check + iterate on issues | 15–60 min |
+| **Total** | **3–6 hours per video** |
 
-```bash
-cd /Users/terrybyrd/Library/CloudStorage/Dropbox/jarvis/video-pipeline
-
-./scripts/auto-edit.sh /path/to/heygen-render.mp4 projects/<ep>
-bun run scripts/transcribe.ts projects/<ep>/tight.mp4 projects/<ep>
-```
-
-### Verify ffmpeg silence detection on a HeyGen render
-
-```bash
-ffmpeg -i raw-heygen.mp4 -af silencedetect=n=-50dB:d=1.0 -f null - 2>&1 | grep silence_end
-```
-
-If fewer silences are reported than expected scenes, the 1-second-silence rule wasn't followed during HeyGen authoring. Re-author HeyGen with proper gaps before running the pipeline.
-
-### Render a single Remotion segment
-
-```bash
-cd Byrddynasty-Videos/<ep>/03-remotion
-npx remotion render Main out/segment_004.mp4 --props='{"segmentId":"004"}'
-```
-
-### Render a VHS terminal recording
-
-```bash
-cd Byrddynasty-Videos/<ep>/07-vhs
-vhs segment_011.tape  # produces segment_011.mp4 next to the .tape file
-```
-
-### Final assembly (manual fallback while stage 6 is unbuilt)
-
-```bash
-cd Byrddynasty-Videos/<ep>/10-output/per-segment-final
-ls *.mp4 | sort | sed "s/^/file '/;s/$/'/" > segments.txt
-ffmpeg -f concat -safe 0 -i segments.txt -c copy ../final-video.mp4
-```
+Realistic cadence: **1–2 videos per week comfortably; 3+ if scripts are pre-written**. The first video of a new flavor takes longer because of new component kinds; the second video of that flavor is fast.
 
 ---
 
-## Build order for the missing stages
+## Reference example
 
-When you come back to build stages 3–6, do them in this order — each unblocks the next and gives a usable end-to-end pipeline at every step:
+`Byrddynasty-Videos/video-8-phase-8/` is the canonical reference. Every file structure decision and component pattern in this skill came from that production. Read its files before authoring a new video — they're the most up-to-date examples.
 
-1. **Director (stage 3) — minimum viable.** HTTP endpoint in `agent-sdk` that takes timings + transcript and returns plan.json with content-driven tool selection. Start with conservative routing (default to Remotion / Motion Canvas); add HyperFrames / VHS / Playwright / ExcaliMotion routing as the prompt matures.
-2. **Renderer dispatcher (stage 4) — start with Remotion + Motion Canvas only.** Read plan.json, render each segment to its bin path. Stub the other tools (skip + log) so you can run end-to-end before all tools are wired.
-3. **PiP composer Path A (stage 5).** ffmpeg-only — circle / rounded-square crop, mode 3 only first, then add modes 4–8.
-4. **Assembly + captions (stage 6).** Concat + caption burn-in. At this point you have a working pipeline producing finished videos with two tools and one composition mode — already a huge improvement.
-5. **Add HyperFrames routing + remaining composition modes** incrementally.
-6. **Add VHS, Playwright, ExcaliMotion routing.**
-7. **Add Path B matting** for center-stage mode (only when content demands it).
-
-Don't try to build all six stages with all seven tools and all eight composition modes before shipping anything. Walk it in.
+Tools required (verify these are installed before starting a new video):
+- `ffmpeg` and `ffprobe` (Homebrew)
+- `whisper-cpp` (Homebrew) + `~/.whisper-models/ggml-base.en.bin`
+- Node + npm (for Remotion)
+- Bun (used elsewhere in JARVIS, not strictly required for the Remotion project)
