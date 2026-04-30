@@ -28,9 +28,18 @@ JARVIS is a personal AI assistant specialized in investment management using Chr
                     └─────────────────────────────┘
 ```
 
+## Path Conventions
+
+Documentation in this repo references two roots via placeholders:
+
+- `${JARVIS_HOME}` = `~/Library/CloudStorage/Dropbox/jarvis` (this public repo)
+- `${JARVIS_PRIVATE}` = `~/Library/CloudStorage/Dropbox/jarvis-private` (private peer directory, not on GitHub)
+
+When you see those placeholders in any SKILL.md or doc, substitute mentally before navigating.
+
 ## Critical: Context System
 
-**ALWAYS** read `context/CLAUDE.md` at the start of every session. This file orchestrates the entire context system including:
+**ALWAYS** read `${JARVIS_PRIVATE}/context/CLAUDE.md` at the start of every session. This file orchestrates the entire context system including:
 - Memory (learnings, preferences, work status)
 - Projects (investments, future domains)
 - Tools (CLI tools, MCP servers)
@@ -40,19 +49,26 @@ The context system uses **progressive disclosure** - only read detailed context 
 ## Directory Structure
 
 ```
-jarvis/
+jarvis/                          # Public GitHub repository
 ├── CLAUDE.md                    # This file - project guidelines
 ├── README.md                    # Setup, tech stack, getting started
 ├── .claude/
 │   ├── output-style.md          # JARVIS personality/identity
 │   ├── settings.json            # Claude Code settings
 │   └── hooks/                   # Behavioral steering
+├── ecosystem/                   # Core framework
+├── skills/                      # Educational example skills
+└── cli-tools/                   # Custom tools
+
+../jarvis-private/               # Private data (not on GitHub)
 ├── context/
 │   ├── CLAUDE.md                # Context system orchestrator
 │   ├── memory/                  # Persistent learnings
 │   ├── projects/                # Domain-specific context
 │   └── tools/                   # CLI/MCP documentation
-└── skills/                      # Packaged capabilities (6 complete)
+├── apps/                        # Your work products
+├── reports/                     # Generated reports
+└── logs/                        # Execution logs
     ├── market-analysis/         # Individual ETF deep dive
     ├── etf-screener/            # Screen 14 ETFs, rank opportunities
     ├── portfolio-builder/       # Construct allocations
@@ -72,9 +88,9 @@ jarvis/
 - Use `glob` and `grep` to find specific information
 
 ### 2. Memory Management
-- Update `context/memory/work-status.md` after completing tasks
-- Create new learnings in `context/memory/learnings.md`
-- Respect user preferences in `context/memory/user-preferences.md`
+- Update `../jarvis-private/context/memory/work-status.md` after completing tasks
+- Create new learnings in `../jarvis-private/context/memory/learnings.md`
+- Respect user preferences in `../jarvis-private/context/memory/user-preferences.md`
 
 ### 3. Skill Execution
 - Skills are in `skills/` directory
@@ -128,13 +144,60 @@ jarvis/
 **Key Achievement:** Complete promotional blitz content library created - multi-platform distribution ready
 **Documentation:** See `apps/content-creation/video-generator/projects/byrddynasty/content-library/LAUNCH-READY-SUMMARY.md`
 
-### Phase 2: Voice Interface
-- Speech-to-text (Whisper)
-- Text-to-speech (ElevenLabs)
-- React frontend for voice interaction
+### Phase 2: Agent SDK + Vector Search + API Integrations ✅ COMPLETE (Apr 1, 2026)
+- [x] **Phase 2A:** Bun runtime + TypeScript environment
+- [x] **Phase 2B:** Hybrid vector + keyword search (local embeddings, $0 cost)
+- [x] **Phase 2C:** Gmail + Calendar integrations (OAuth, programmatic access)
+- [x] **Phase 2D:** 24/7 heartbeat + specialized subagents
 
-### Phase 3: Full Integration
-- Brokerage integration (Alpaca)
+**Key Achievement:** Zero-cost autonomous agent with intelligent memory search and direct API integrations
+**Documentation:** See `PHASE-2-COMPLETE.md` and `agent-sdk/` directory
+
+**Capabilities Added:**
+- Semantic vector search (70% vector + 30% keyword, ~60-200ms, $0 cost)
+- Read emails programmatically (search, filter, check broker alerts)
+- Access calendar events (today, upcoming, earnings calendar)
+- 24/7 autonomous monitoring (survives reboots, CLI-first, $0/month)
+
+### Phase 3: Autonomous Intelligence & Remote Access ⏳ IN PROGRESS (Apr 4, 2026)
+
+#### Phase 3A: Agent SDK ✅ COMPLETE (Apr 4, 2026)
+- [x] **Persistent Bun server** - 24/7 execution on port 3000
+- [x] **CLI subprocess approach** - Using Claude Code CLI (Cole Medin method)
+- [x] **HTTP/WebSocket APIs** - Remote query endpoints
+- [x] **Event loop** - Time-based triggers (8 AM, 9:30 AM, 4 PM)
+- [x] **Execution logging** - SQLite database tracking
+- [x] **$0/month cost** - OAuth token (no API charges)
+
+**Key Achievement:** True persistent autonomous agent using CLI subprocesses instead of expensive API calls  
+**Documentation:** See `PHASE-3A-COMPLETE.md` and `PHASE-3-CLI-SUBPROCESS-APPROACH.md`
+
+#### Phase 3B: Daily Reflection ✅ COMPLETE (Apr 4, 2026)
+- [x] **8 AM automatic reflection** - Reviews yesterday's logs
+- [x] **Learning extraction** - JARVIS analyzes patterns, extracts insights
+- [x] **Memory file updates** - Auto-updates learnings.md and work-status.md
+- [x] **Morning briefing** - Market + Portfolio + Calendar + Email + Priorities
+- [x] **Zero manual intervention** - Self-improving AI that learns from every execution
+
+**Key Achievement:** JARVIS manages its own memory and delivers actionable morning intelligence daily  
+**Documentation:** See `PHASE-3B-COMPLETE.md`
+
+**Capabilities Added:**
+- CLI subprocess execution (full JARVIS context, $0 cost)
+- Daily learning cycle (3-7 insights per day)
+- Automatic memory management (no human updates needed)
+- Morning briefings (portfolio alerts, priorities, calendar awareness)
+
+#### Phase 3C: Remote Access 🔄 NEXT
+- [ ] Chat interface (Slack/Telegram bot for mobile access)
+- [ ] Push notifications for portfolio alerts
+- [ ] Natural language queries from anywhere
+
+#### Phase 3D: Voice Interface (Future)
+- Voice interface (Whisper + ElevenLabs + React frontend)
+
+### Phase 4: Full Integration
+- Brokerage integration (Alpaca - if needed for trading)
 - Database persistence (Supabase)
 - Dashboard and reporting
 
@@ -157,34 +220,37 @@ claude --dangerously-skip-permissions
 ## Key Files to Read
 
 ### Every Session
-1. `context/CLAUDE.md` - Context system orchestrator (always read first)
-2. `context/memory/work-status.md` - Current state and recent work
+1. `../jarvis-private/context/CLAUDE.md` - Context system orchestrator (always read first)
+2. `../jarvis-private/context/memory/work-status.md` - Current state and recent work
 
 ### When Needed
-3. `context/projects/investments/CLAUDE.md` - Asset Revesting methodology
+3. `../jarvis-private/context/projects/investments/CLAUDE.md` - Asset Revesting methodology
 4. `skills/market-analysis/SKILL.md` - When performing market analysis
-5. `context/tools/market-data-cli.md` - When using market data tool
-6. `context/memory/learnings.md` - Past insights and patterns
-7. `context/memory/user-preferences.md` - Terry's preferences
+5. `../jarvis-private/context/tools/market-data-cli.md` - When using market data tool
+6. `../jarvis-private/context/memory/learnings.md` - Past insights and patterns
+7. `../jarvis-private/context/memory/user-preferences.md` - Terry's preferences
 
 ## Byrddynasty Video Content
 
-**CRITICAL: ALWAYS check this file FIRST when user requests Byrddynasty video content:**
-- `apps/content-creation/video-generator/projects/byrddynasty/VIDEO-CREATION-STANDARD.md`
+**CRITICAL: ALWAYS check this skill FIRST when user requests Byrddynasty video content:**
+- `skills/video-image-creation/SKILL.md`
 
 **When user asks for:**
 - Long-form Byrddynasty videos (10-15 minutes)
-- Video scripts and prompts
+- Video scripts and image prompts
 - Multi-part video series
 - Educational/tutorial content for the channel
 - ANY Byrddynasty video-related requests
 
 **You MUST:**
-1. Read `VIDEO-CREATION-STANDARD.md` FIRST (before creating anything)
-2. Follow the standard structure (Segment 000 intro, 001-009/010 content, outro, Subscribe CTA)
-3. Match reference quality (Harness Video 3)
-4. Use the quality checklist before delivering
-5. Default to multi-part series for complex topics (2-3 videos)
+1. Read `skills/video-image-creation/SKILL.md` FIRST (before creating anything)
+2. Follow **20-30 second script segments** (break longer segments into multiple images)
+3. Create **1:1 script-to-image ratio** (each segment = one numbered image)
+4. Use **large headings, vibrant colors, simple visuals** (not text-heavy)
+5. Sequential numbering only (001, 002, 003... NO sub-versions like 001A)
+6. Reference quality examples in SKILL.md
+
+**KEY REQUIREMENT:** Each script segment must be 20-30 seconds MAX. If longer, break into multiple segments with separate images.
 
 **This is AUTOMATIC - do NOT wait to be reminded.**
 
@@ -197,8 +263,8 @@ claude --dangerously-skip-permissions
 - **`OPTIONS-A-B-C-D-SUMMARY.md`** - Complete Phase 0 development journey
 
 ### For Context Recovery (If Session Lost)
-- `context/memory/work-status.md` - What was completed, what's next
-- `context/memory/learnings.md` - All accumulated knowledge
+- `../jarvis-private/context/memory/work-status.md` - What was completed, what's next
+- `../jarvis-private/context/memory/learnings.md` - All accumulated knowledge
 - `SESSION-ACCOMPLISHMENTS.md` - Latest session achievements
 
 ## Current Capabilities
@@ -216,7 +282,7 @@ claude --dangerously-skip-permissions
 - `jarvis-price current SYMBOL` - Current price and market data
 - `jarvis-price history SYMBOL --days N` - Historical data
 
-See `context/tools/market-data-cli.md` for complete documentation.
+See `../jarvis-private/context/tools/market-data-cli.md` for complete documentation.
 
 ### MCP Integration (Phase 3+)
 - **Lazy loading enabled** in `.claude/settings.json` (`enableToolSearch: true`)
@@ -228,7 +294,7 @@ See `context/tools/market-data-cli.md` for complete documentation.
 
 1. **Analyze any stock/ETF** using Asset Revesting 4-stage framework
 2. **Detect market signals** from real Yahoo Finance data
-3. **Generate professional reports** saved to `reports/`
+3. **Generate professional reports** saved to `../jarvis-private/reports/`
 4. **Update its own memory** after completing tasks
 5. **Learn from experience** via `learnings.md`
 6. **Maintain continuity** across sessions

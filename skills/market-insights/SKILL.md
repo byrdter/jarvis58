@@ -85,7 +85,7 @@ transcript = YouTubeTranscriptApi.get_transcript(video_id)
 full_text = " ".join([entry['text'] for entry in transcript])
 
 # Save raw transcript for reference
-save_to: /Users/terrybyrd/Dropbox/jarvis/skills/market-insights/transcripts/vermeulen-YYYY-MM-DD-[video-id].txt
+save_to: ${JARVIS_PRIVATE}/research/transcripts/vermeulen/vermeulen-YYYY-MM-DD-[video-id].txt
 ```
 
 **Step 3: AI Summarization & Analysis**
@@ -388,7 +388,7 @@ JARVIS:
 
 ## Raw Transcript
 
-**Link:** /Users/terrybyrd/Dropbox/jarvis/skills/market-insights/transcripts/vermeulen-YYYY-MM-DD-[video-id].txt
+**Link:** ${JARVIS_PRIVATE}/research/transcripts/vermeulen/vermeulen-YYYY-MM-DD-[video-id].txt
 
 [Or embedded if short enough]
 
@@ -421,7 +421,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 CHANNEL_URL = "https://www.youtube.com/@TheTechnicalTraders/videos"
 STATE_FILE = Path(__file__).parent / "last_processed.json"
-TRANSCRIPT_DIR = Path(__file__).parent / "transcripts"
+TRANSCRIPT_DIR = Path(os.environ.get("JARVIS_PRIVATE", Path.home() / "Library/CloudStorage/Dropbox/jarvis-private")) / "research/transcripts/vermeulen"
 
 def get_latest_video():
     """Fetch latest video from channel (no API needed)."""
