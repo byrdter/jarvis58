@@ -306,3 +306,7 @@ agent-sdk/
 
 # Regenerable HeyGen VO segment files (broaden existing segments rule)
 **/heygen-segments/
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+.beads-credential-key
