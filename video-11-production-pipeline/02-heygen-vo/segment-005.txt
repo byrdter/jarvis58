@@ -1,0 +1,1 @@
+Optional add-ons. <break time="1s"/> Higgsfield for AI B-roll. <break time="1s"/> Nano Banana Pro for image generation. <break time="1s"/> ElevenLabs if you don't want an avatar. <break time="1s"/> MCP servers for anything else. <break time="1.5s"/>

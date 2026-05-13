@@ -1,0 +1,1 @@
+So I built one. Here's the stack. <break time="1s"/> HeyGen for the talking-head avatar. <break time="1s"/> Remotion for everything else — graphics, transitions, captions, the final render. <break time="1s"/> HyperFrames for HTML-based graphics. <break time="1s"/> Claude Code and Codex as the director, orchestrating the whole thing. <break time="1.5s"/>
