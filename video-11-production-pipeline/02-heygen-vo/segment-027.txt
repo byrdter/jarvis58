@@ -1,1 +1,1 @@
-Why? <break time="1s"/> Because the avatar is the part viewers actually judge. <break time="1s"/> Everything else is just packaging. <break time="1.5s"/>
+Why? Because the avatar is the part viewers actually judge. Everything else is just packaging. <break time="1s"/>

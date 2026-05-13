@@ -1,1 +1,1 @@
-I'm going to show you three ways to get there. <break time="1s"/> One costs money. <break time="1s"/> One costs almost nothing. <break time="1s"/> One is the pragmatic middle. <break time="1.5s"/>
+We're going to show you three ways to get there. One costs money. One costs almost nothing. One is the pragmatic middle. <break time="1s"/>

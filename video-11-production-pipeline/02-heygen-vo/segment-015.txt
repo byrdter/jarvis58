@@ -1,1 +1,1 @@
-The pipeline runs in five stages. <break time="1.5s"/>
+The pipeline runs in five stages. <break time="1s"/>

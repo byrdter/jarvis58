@@ -1,1 +1,1 @@
-Are you shipping more than ten videos a month? <break time="1s"/> Path A. <break time="1s"/> The API cost pays for itself in time saved. <break time="1.5s"/>
+Are you shipping more than ten videos a month? Path A. The API cost pays for itself in time saved. <break time="1s"/>
