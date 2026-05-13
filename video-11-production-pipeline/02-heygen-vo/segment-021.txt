@@ -1,0 +1,1 @@
+Stage five. Render. <break time="1s"/> One command. <break time="1s"/> Remotion renders every frame in parallel using a headless Chrome cluster. <break time="1s"/> Ten-minute video, ten minutes to render. <break time="1.5s"/>

@@ -1,0 +1,1 @@
+The avatar work is where the choice lives. <break time="1s"/> You can fully automate it with the HeyGen API. <break time="1s"/> You can drive the HeyGen browser app with Claude Code. <break time="1s"/> Or you can do twenty minutes of manual work and let the pipeline handle the rest. <break time="1.5s"/>
