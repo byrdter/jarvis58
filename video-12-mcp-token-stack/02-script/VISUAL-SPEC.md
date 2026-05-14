@@ -41,8 +41,9 @@ Asset convention:
 | 27 | Migration phase 3 | Sandbox diagram based on Cloudflare/Anthropic | Code enters sandbox; only final result exits |
 | 28 | Mistakes | Three "bad take" cards shredded/replaced | Red cards flip to green corrected versions |
 | 29 | Evidence wall | Mosaic of source screenshots | Camera pan across Cloudflare, Anthropic, Arcade, Scalekit, JARVIS |
-| 30 | Avatar full-screen | HeyGen Avatar V | Minimal overlay: "Right layer. Right scope. Measured output." |
-| 31 | Avatar full-screen | HeyGen Avatar V | End card with subscribe/next video; no extra graphics over face |
+| 30 | Graphics CTA | Channel CTA visual, no avatar | Subscribe button tap, like icon pulse, notification bell ring, next-video teaser |
+| 31 | Avatar full-screen | HeyGen Avatar V | Minimal overlay: "Right layer. Right scope. Measured output." |
+| 32 | Avatar full-screen | HeyGen Avatar V | Clean close; no extra CTA over face |
 
 ## Required Captures
 
@@ -79,4 +80,3 @@ Use these Remotion shot types as the base vocabulary:
 - Source screenshots should be cropped to the relevant claim, with URL/source badge.
 - Cursor movement should be slow enough to follow, then the highlight should hold.
 - Every source proof needs one clear visual verb: circle, underline, zoom, row flash, counter, or wipe.
-
