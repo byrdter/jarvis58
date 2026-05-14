@@ -8,13 +8,13 @@ Avatar blocks:
 - Segment 6: Avatar V side-screen.
 - Segment 13: Avatar V side-screen.
 - Segment 22: Avatar V side-screen.
-- Segments 30-31: Avatar V full-screen.
+- Segments 31-32: Avatar V full-screen.
 
 All other segments: hidden avatar / voice-only in HeyGen, filled by Remotion/HyperFrames.
 
 ## Segment 1 — Full-Screen Avatar — Cold Open
 
-MCP used to have a brutal problem. You could burn tens of thousands of tokens before you asked the agent to do anything. But in 2026, that story changed. Tool Search, scoped loading, and Code Mode are real improvements. So the question is no longer, "Is MCP bad?" The better question is, "Which layer should do which job?"
+I am the avatar for Dr. Terry Byrd, and we are looking at a problem every serious agent builder has to understand. MCP used to have a brutal problem. You could burn tens of thousands of tokens before you asked the agent to do anything. But in 2026, that story changed. Tool Search, scoped loading, and Code Mode are real improvements. So the question is no longer, "Is MCP bad?" The better question is, "Which layer should do which job?"
 
 ## Segment 2 — Source Proof: Old Context Flood
 
@@ -34,7 +34,7 @@ The accuracy numbers are better, but not magical. Anthropic reported MCP eval im
 
 ## Segment 6 — Side Avatar — Thesis
 
-So here is my position. MCP is not dead. Skills are not a replacement for MCP. And CLI scripts are not the universal answer. These are layers. MCP connects agents to external systems. Skills teach the agent procedures. CLI scripts do deterministic local work. Code execution compresses multi-step workflows. The mistake is forcing one layer to do all four jobs.
+So here is our position. MCP is not dead. Skills are not a replacement for MCP. And CLI scripts are not the universal answer. These are layers. MCP connects agents to external systems. Skills teach the agent procedures. CLI scripts do deterministic local work. Code execution compresses multi-step workflows. The mistake is forcing one layer to do all four jobs.
 
 ## Segment 7 — Cloudflare Code Mode Hook
 
@@ -98,11 +98,11 @@ Put the stack on one screen. Direct MCP is simple but expensive when schemas and
 
 ## Segment 22 — Side Avatar — Practical Rule
 
-Here is the rule I use now. If the agent needs permissioned access to an external system, consider MCP. If it needs to know how we do something, use a skill. If it needs to run a local deterministic operation, use a CLI script. If it needs to move or transform a lot of data across steps, use code execution. Do not make one tool carry every job.
+Here is the rule we use now. If the agent needs permissioned access to an external system, consider MCP. If it needs to know how we do something, use a skill. If it needs to run a local deterministic operation, use a CLI script. If it needs to move or transform a lot of data across steps, use code execution. Do not make one tool carry every job.
 
 ## Segment 23 — JARVIS Architecture Map
 
-That is the pattern I want in JARVIS. The wiki is memory. Skills are operating procedures. Local scripts are reliable actions. MCP is for permissioned external services. Scheduled jobs create the heartbeat. The agent orchestrates the layers, but it does not need every layer fully loaded in context all the time.
+That is the pattern we want in JARVIS. The wiki is memory. Skills are operating procedures. Local scripts are reliable actions. MCP is for permissioned external services. Scheduled jobs create the heartbeat. The agent orchestrates the layers, but it does not need every layer fully loaded in context all the time.
 
 ## Segment 24 — Measurement Plan
 
@@ -122,17 +122,20 @@ Only then reach for the heavy patterns. For multi-step workflows with large inte
 
 ## Segment 28 — Mistakes to Avoid
 
-There are three mistakes I would avoid. First, saying MCP is dead because CLI is cheaper on local tasks. Second, saying MCP is fixed because Tool Search exists. Third, treating compact formats like TOON as a universal compression spell. The winning stack is boring: right layer, right scope, measured output.
+There are three mistakes we would avoid. First, saying MCP is dead because CLI is cheaper on local tasks. Second, saying MCP is fixed because Tool Search exists. Third, treating compact formats like TOON as a universal compression spell. The winning stack is boring: right layer, right scope, measured output.
 
 ## Segment 29 — Evidence Beats Opinion
 
 The reason this video matters is that the debate is moving from opinions to evidence. Cloudflare has the one-thousand-token API. Anthropic has Tool Search and code execution numbers. Arcade has a four-thousand-tool stress test. Scalekit has CLI versus MCP cost and failure data. JARVIS gives us a place to test the stack on real work.
 
-## Segment 30 — Full-Screen Avatar — Recap
+## Segment 30 — Graphics CTA
+
+Before the closing summary, take a second to subscribe, hit the like button, and ring the notification bell for the next video. This channel is building a practical library around agentic AI, automation, and real systems like JARVIS. The more feedback we get, the better these walkthroughs become.
+
+## Segment 31 — Full-Screen Avatar — Recap
 
 So the answer is not "skills beat MCP." The answer is that MCP is one layer in a larger agent architecture. Use Tool Search to avoid loading everything. Use scoped MCP to narrow production access. Use skills for procedures. Use CLI for local deterministic work. Use code execution when intermediate data should stay out of the model.
 
-## Segment 31 — Full-Screen Avatar — CTA / Close
+## Segment 32 — Full-Screen Avatar — Close
 
-If you build agents, do not ask which integration is fashionable. Ask where the tokens go, where the data lives, and who the agent is acting for. That is the 2026 token stack. If you want more videos like this, subscribe, like the video, and ring the notification bell. New videos every week.
-
+If you build agents, do not ask which integration is fashionable. Ask where the tokens go, where the data lives, and who the agent is acting for. That is the 2026 token stack. New videos every week.

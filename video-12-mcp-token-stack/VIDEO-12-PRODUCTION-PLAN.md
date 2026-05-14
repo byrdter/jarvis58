@@ -41,7 +41,8 @@ Visible avatar blocks:
 | C | 6 | Avatar V side-screen | Thesis reset |
 | E | 13 | Avatar V side-screen | Security warning |
 | G | 22 | Avatar V side-screen | Practical rule |
-| I | 30-31 | Avatar V full-screen | Recap and CTA |
+| H | 30 | Hidden avatar / voice-only | Subscribe / like / notification CTA before closing avatar |
+| I | 31-32 | Avatar V full-screen | Recap and close |
 
 All other HeyGen scenes should be blank / hidden-avatar voice-only. Remotion and HyperFrames fill those frames with real docs, screenshots, terminal captures, tables, code, and animated annotations.
 
@@ -76,6 +77,13 @@ Use one HeyGen project with 9 scenes:
 9. Block I: Avatar V full-screen.
 
 Use the block text from `02-script/HEYGEN-PASTE.txt`.
+
+Dialogue rule:
+
+- Use collective language: we, our, ours.
+- Avoid first-person singular in the dialogue.
+- The only approved exception is the first sentence of segment 1: "I am the avatar for Dr. Terry Byrd..."
+- Put subscribe / like / notification-bell CTA before the final full-screen talking-head closing block, not inside the final close.
 
 For graphics-only blocks, keep the 1-second SSML breaks between segments. Those pauses become reliable scene boundaries for Remotion timing.
 
@@ -124,4 +132,3 @@ The finished video should feel like an engineering investigation, not a slide de
 - The viewer gets a concrete migration order.
 - The viewer understands where MCP still wins.
 - The viewer leaves with a mental model they can implement.
-

@@ -1,5 +1,5 @@
 ═══ BLOCK A — Avatar V, FULL-SCREEN — Segment 1 ═══
-MCP used to have a brutal problem. You could burn tens of thousands of tokens before you asked the agent to do anything. But in 2026, that story changed. Tool Search, scoped loading, and Code Mode are real improvements. So the question is no longer, "Is MCP bad?" The better question is, "Which layer should do which job?" <break time="1s"/>
+I am the avatar for Dr. Terry Byrd, and we are looking at a problem every serious agent builder has to understand. MCP used to have a brutal problem. You could burn tens of thousands of tokens before you asked the agent to do anything. But in 2026, that story changed. Tool Search, scoped loading, and Code Mode are real improvements. So the question is no longer, "Is MCP bad?" The better question is, "Which layer should do which job?" <break time="1s"/>
 
 ═══ BLOCK B — NO AVATAR / HIDDEN VOICE — Segments 2-5 ═══
 Here is the old failure mode. You connect GitHub, Slack, Sentry, Grafana, Splunk, maybe Jira. Before the user types a task, the model is already carrying tool definitions. That is not work. That is overhead. And overhead is not just money. It is latency, confusion, and less room for the actual problem. <break time="1s"/>
@@ -11,7 +11,7 @@ But this is where the easy take gets dangerous. If you say, "MCP is fixed now," 
 The accuracy numbers are better, but not magical. Anthropic reported MCP eval improvements from forty-nine percent to seventy-four percent on Opus 4, and from seventy-nine point five to eighty-eight point one percent on Opus 4.5. Then Arcade stress-tested more than four thousand tools and saw retrieval around sixty percent. That is the trade: better context economics, but now search quality is part of your reliability model. <break time="1s"/>
 
 ═══ BLOCK C — Avatar V, SIDE-SCREEN — Segment 6 ═══
-So here is my position. MCP is not dead. Skills are not a replacement for MCP. And CLI scripts are not the universal answer. These are layers. MCP connects agents to external systems. Skills teach the agent procedures. CLI scripts do deterministic local work. Code execution compresses multi-step workflows. The mistake is forcing one layer to do all four jobs. <break time="1s"/>
+So here is our position. MCP is not dead. Skills are not a replacement for MCP. And CLI scripts are not the universal answer. These are layers. MCP connects agents to external systems. Skills teach the agent procedures. CLI scripts do deterministic local work. Code execution compresses multi-step workflows. The mistake is forcing one layer to do all four jobs. <break time="1s"/>
 
 ═══ BLOCK D — NO AVATAR / HIDDEN VOICE — Segments 7-12 ═══
 Cloudflare showed the sharpest version of this idea. They took the entire Cloudflare API and exposed it through two tools: search and execute. Instead of loading thousands of endpoint schemas, the agent writes code against a typed API and runs that code in a sandbox. Their claim is extreme: about one thousand input tokens instead of one point one seven million. <break time="1s"/>
@@ -47,10 +47,10 @@ Compact formats like TOON can help, but only in the right shape. TOON is stronge
 Put the stack on one screen. Direct MCP is simple but expensive when schemas and outputs are large. Tool Search reduces idle load. Scoped MCP narrows production surfaces. Skills carry procedure. CLI handles local deterministic work. Code execution keeps intermediate data out of context. Output filtering and compact notation reduce payloads after the call. <break time="1s"/>
 
 ═══ BLOCK G — Avatar V, SIDE-SCREEN — Segment 22 ═══
-Here is the rule I use now. If the agent needs permissioned access to an external system, consider MCP. If it needs to know how we do something, use a skill. If it needs to run a local deterministic operation, use a CLI script. If it needs to move or transform a lot of data across steps, use code execution. Do not make one tool carry every job. <break time="1s"/>
+Here is the rule we use now. If the agent needs permissioned access to an external system, consider MCP. If it needs to know how we do something, use a skill. If it needs to run a local deterministic operation, use a CLI script. If it needs to move or transform a lot of data across steps, use code execution. Do not make one tool carry every job. <break time="1s"/>
 
-═══ BLOCK H — NO AVATAR / HIDDEN VOICE — Segments 23-29 ═══
-That is the pattern I want in JARVIS. The wiki is memory. Skills are operating procedures. Local scripts are reliable actions. MCP is for permissioned external services. Scheduled jobs create the heartbeat. The agent orchestrates the layers, but it does not need every layer fully loaded in context all the time. <break time="1s"/>
+═══ BLOCK H — NO AVATAR / HIDDEN VOICE — Segments 23-30 ═══
+That is the pattern we want in JARVIS. The wiki is memory. Skills are operating procedures. Local scripts are reliable actions. MCP is for permissioned external services. Scheduled jobs create the heartbeat. The agent orchestrates the layers, but it does not need every layer fully loaded in context all the time. <break time="1s"/>
 
 The next step is measuring it. Pick one real task: look up the current MACD value for QQQ, compare it to last week, and write a one-paragraph report. Run it four ways: naive MCP, Tool Search, the current JARVIS stack with skills plus CLI, and a code-execution version. Capture tokens, latency, reliability, and context used. <break time="1s"/>
 
@@ -60,12 +60,13 @@ Then move procedural knowledge into skills. Stop stuffing every rule into the ma
 
 Only then reach for the heavy patterns. For multi-step workflows with large intermediate data, use programmatic tool calling where it fits. For MCP connector workflows that cannot be called programmatically, use Code Mode or code execution with MCP wrappers. If you do this, sandboxing is not optional. It is the product. <break time="1s"/>
 
-There are three mistakes I would avoid. First, saying MCP is dead because CLI is cheaper on local tasks. Second, saying MCP is fixed because Tool Search exists. Third, treating compact formats like TOON as a universal compression spell. The winning stack is boring: right layer, right scope, measured output. <break time="1s"/>
+There are three mistakes we would avoid. First, saying MCP is dead because CLI is cheaper on local tasks. Second, saying MCP is fixed because Tool Search exists. Third, treating compact formats like TOON as a universal compression spell. The winning stack is boring: right layer, right scope, measured output. <break time="1s"/>
 
 The reason this video matters is that the debate is moving from opinions to evidence. Cloudflare has the one-thousand-token API. Anthropic has Tool Search and code execution numbers. Arcade has a four-thousand-tool stress test. Scalekit has CLI versus MCP cost and failure data. JARVIS gives us a place to test the stack on real work. <break time="1s"/>
 
-═══ BLOCK I — Avatar V, FULL-SCREEN — Segments 30-31 (continuous) ═══
+Before the closing summary, take a second to subscribe, hit the like button, and ring the notification bell for the next video. This channel is building a practical library around agentic AI, automation, and real systems like JARVIS. The more feedback we get, the better these walkthroughs become. <break time="1s"/>
+
+═══ BLOCK I — Avatar V, FULL-SCREEN — Segments 31-32 (continuous) ═══
 So the answer is not "skills beat MCP." The answer is that MCP is one layer in a larger agent architecture. Use Tool Search to avoid loading everything. Use scoped MCP to narrow production access. Use skills for procedures. Use CLI for local deterministic work. Use code execution when intermediate data should stay out of the model.
 
-If you build agents, do not ask which integration is fashionable. Ask where the tokens go, where the data lives, and who the agent is acting for. That is the 2026 token stack. If you want more videos like this, subscribe, like the video, and ring the notification bell. New videos every week. <break time="1s"/>
-
+If you build agents, do not ask which integration is fashionable. Ask where the tokens go, where the data lives, and who the agent is acting for. That is the 2026 token stack. New videos every week. <break time="1s"/>
