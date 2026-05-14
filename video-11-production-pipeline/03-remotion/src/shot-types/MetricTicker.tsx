@@ -27,7 +27,7 @@ export const MetricTicker: React.FC<MetricTickerProps> = ({
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.bezier(0.2, 0.7, 0.2, 1) },
   );
 
-  const pop = interpolate(frame, [startF + duration - 4, startF + duration + 8], [1, 1.08, 1], {
+  const pop = interpolate(frame, [startF + duration - 4, startF + duration + 2, startF + duration + 8], [1, 1.08, 1], {
     extrapolateLeft: 'clamp', extrapolateRight: 'clamp',
   });
 

@@ -8,12 +8,19 @@ export interface BrowserPlaybackProps {
   /** Address bar text. */
   url?: string;
   caption?: string;
+  fallbackTitle?: string;
+  fallbackSteps?: string[];
   /** Playback speedup multiplier hint (visual only — apply real speedup via ffmpeg pre-render). */
   speedX?: number;
 }
 
 export const BrowserPlayback: React.FC<BrowserPlaybackProps> = ({
-  src, url = 'about:capture', caption, speedX,
+  src,
+  url = 'about:capture',
+  caption,
+  fallbackTitle = 'Recorded workflow',
+  fallbackSteps = ['Open source project', 'Run capture script', 'Write assets', 'Render proof'],
+  speedX,
 }) => {
   const frame = useCurrentFrame();
   const captionOpacity = caption
@@ -75,7 +82,7 @@ export const BrowserPlayback: React.FC<BrowserPlaybackProps> = ({
         </div>
 
         {/* Capture surface */}
-        <div style={{ position: 'relative', width: 1640, height: 920, background: '#000' }}>
+        <div style={{ position: 'relative', width: 1640, height: 920, background: '#050812' }}>
           {src ? (
             <OffthreadVideo
               src={staticFile(src)}
@@ -85,12 +92,101 @@ export const BrowserPlayback: React.FC<BrowserPlaybackProps> = ({
           ) : (
             <div
               style={{
-                width: '100%', height: '100%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: COLORS.textDim, fontSize: 24, letterSpacing: 2,
+                width: '100%',
+                height: '100%',
+                padding: 54,
+                color: COLORS.textPrimary,
               }}
             >
-              SCREEN CAPTURE — drop Playwright / ffmpeg .mp4 into public/ and pass `src`
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ color: COLORS.textDim, fontFamily: FONT.mono, fontSize: 18, textTransform: 'uppercase' }}>
+                    Screen capture
+                  </div>
+                  <div style={{ marginTop: 10, fontSize: 46, fontWeight: 800 }}>{fallbackTitle}</div>
+                </div>
+                <div
+                  style={{
+                    padding: '10px 16px',
+                    borderRadius: 999,
+                    background: 'rgba(0,212,255,0.14)',
+                    border: `1px solid ${COLORS.accent}`,
+                    color: COLORS.accent,
+                    fontFamily: FONT.mono,
+                    fontSize: 18,
+                  }}
+                >
+                  LIVE RUN
+                </div>
+              </div>
+
+              <div style={{ marginTop: 54, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
+                {fallbackSteps.map((step, index) => {
+                  const appear = interpolate(frame, [index * 10 + 8, index * 10 + 20], [0, 1], {
+                    extrapolateLeft: 'clamp',
+                    extrapolateRight: 'clamp',
+                  });
+                  const progress = interpolate(frame, [index * 14 + 18, index * 14 + 58], [0, 1], {
+                    extrapolateLeft: 'clamp',
+                    extrapolateRight: 'clamp',
+                  });
+
+                  return (
+                    <div
+                      key={step}
+                      style={{
+                        opacity: appear,
+                        transform: `translateY(${(1 - appear) * 18}px)`,
+                        padding: 28,
+                        minHeight: 170,
+                        borderRadius: 14,
+                        background: 'rgba(14,21,34,0.92)',
+                        border: `1px solid ${index % 2 === 0 ? COLORS.accent : COLORS.accentWarm}`,
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                        <div
+                          style={{
+                            width: 38,
+                            height: 38,
+                            borderRadius: 10,
+                            background: index % 2 === 0 ? COLORS.accent : COLORS.accentWarm,
+                            color: '#071018',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 900,
+                          }}
+                        >
+                          {index + 1}
+                        </div>
+                        <div style={{ fontSize: 26, fontWeight: 800 }}>{step}</div>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: 28,
+                          height: 12,
+                          borderRadius: 999,
+                          background: 'rgba(255,255,255,0.08)',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: `${Math.round(progress * 100)}%`,
+                            height: '100%',
+                            background: index % 2 === 0 ? COLORS.accent : COLORS.accentWarm,
+                          }}
+                        />
+                      </div>
+                      <div style={{ marginTop: 18, color: COLORS.textDim, fontFamily: FONT.mono, fontSize: 17 }}>
+                        {progress >= 1 ? 'done' : 'running...'}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
           {caption && (

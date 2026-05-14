@@ -4,6 +4,7 @@
   "description": "JARVIS Video 11 — Production Pipeline. Shot-types menu + composition.",
   "scripts": {
     "start": "remotion preview src/index.ts",
+    "render": "remotion render src/index.ts Main ../10-videos/video-11-codex.mp4",
     "demo": "remotion render src/index.ts ShotDemo out/shot-demo.mp4",
     "upgrade": "remotion upgrade"
   },
