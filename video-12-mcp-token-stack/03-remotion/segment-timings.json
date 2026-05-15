@@ -1,0 +1,198 @@
+[
+  {
+    "seg": 1,
+    "start": 0.0,
+    "first_tokens": "i am the avatar for",
+    "end": 35.04,
+    "duration": 35.04
+  },
+  {
+    "seg": 2,
+    "start": 35.04,
+    "first_tokens": "here is the old failure",
+    "end": 85.98,
+    "duration": 50.94
+  },
+  {
+    "seg": 4,
+    "start": 85.98,
+    "first_tokens": "but this is where the",
+    "end": 107.54,
+    "duration": 21.56
+  },
+  {
+    "seg": 5,
+    "start": 107.54,
+    "first_tokens": "the accuracy numbers are better",
+    "end": 139.22,
+    "duration": 31.68
+  },
+  {
+    "seg": 6,
+    "start": 139.22,
+    "first_tokens": "so here is our position",
+    "end": 172.52,
+    "duration": 33.3
+  },
+  {
+    "seg": 7,
+    "start": 172.52,
+    "first_tokens": "cloudflare showed the sharpest version",
+    "end": 198.06,
+    "duration": 25.54
+  },
+  {
+    "seg": 8,
+    "start": 198.06,
+    "first_tokens": "that number matters because it",
+    "end": 221.4,
+    "duration": 23.34
+  },
+  {
+    "seg": 9,
+    "start": 221.4,
+    "first_tokens": "anthropic published the same pattern",
+    "end": 241.68,
+    "duration": 20.28
+  },
+  {
+    "seg": 10,
+    "start": 241.68,
+    "first_tokens": "that is the waste the",
+    "end": 265.56,
+    "duration": 23.88
+  },
+  {
+    "seg": 11,
+    "start": 265.56,
+    "first_tokens": "the result is the headline",
+    "end": 285.48,
+    "duration": 19.92
+  },
+  {
+    "seg": 12,
+    "start": 285.48,
+    "first_tokens": "there is a catch anthropic",
+    "end": 315.48,
+    "duration": 30.0
+  },
+  {
+    "seg": 13,
+    "start": 315.48,
+    "first_tokens": "this is also where serious",
+    "end": 345.48,
+    "duration": 30.0
+  },
+  {
+    "seg": 17,
+    "start": 345.48,
+    "first_tokens": "then there is the boring",
+    "end": 373.16,
+    "duration": 27.68
+  },
+  {
+    "seg": 18,
+    "start": 373.16,
+    "first_tokens": "but the same benchmark makes",
+    "end": 399.66,
+    "duration": 26.5
+  },
+  {
+    "seg": 19,
+    "start": 399.66,
+    "first_tokens": "the next layer is output",
+    "end": 425.38,
+    "duration": 25.72
+  },
+  {
+    "seg": 20,
+    "start": 425.38,
+    "first_tokens": "compact formats like toon can",
+    "end": 449.3,
+    "duration": 23.92
+  },
+  {
+    "seg": 21,
+    "start": 449.3,
+    "first_tokens": "put the stack on one",
+    "end": 476.52,
+    "duration": 27.22
+  },
+  {
+    "seg": 22,
+    "start": 476.52,
+    "first_tokens": "here is the rule we",
+    "end": 503.44,
+    "duration": 26.92
+  },
+  {
+    "seg": 23,
+    "start": 503.44,
+    "first_tokens": "that is the pattern we",
+    "end": 527.06,
+    "duration": 23.62
+  },
+  {
+    "seg": 24,
+    "start": 527.06,
+    "first_tokens": "the next step is measuring",
+    "end": 552.46,
+    "duration": 25.4
+  },
+  {
+    "seg": 25,
+    "start": 552.46,
+    "first_tokens": "if you are fixing your",
+    "end": 573.04,
+    "duration": 20.58
+  },
+  {
+    "seg": 26,
+    "start": 573.04,
+    "first_tokens": "then move procedural knowledge into",
+    "end": 596.14,
+    "duration": 23.1
+  },
+  {
+    "seg": 27,
+    "start": 596.14,
+    "first_tokens": "only then reach for the",
+    "end": 619.9,
+    "duration": 23.76
+  },
+  {
+    "seg": 28,
+    "start": 619.9,
+    "first_tokens": "there are three mistakes we",
+    "end": 642.18,
+    "duration": 22.28
+  },
+  {
+    "seg": 29,
+    "start": 642.18,
+    "first_tokens": "the reason this video matters",
+    "end": 669.24,
+    "duration": 27.06
+  },
+  {
+    "seg": 30,
+    "start": 669.24,
+    "first_tokens": "before the closing summary take",
+    "end": 689.64,
+    "duration": 20.4
+  },
+  {
+    "seg": 31,
+    "start": 689.64,
+    "first_tokens": "so the answer is not",
+    "end": 714.16,
+    "duration": 24.52
+  },
+  {
+    "seg": 32,
+    "start": 714.16,
+    "first_tokens": "if you build agents do",
+    "end": 729.693,
+    "duration": 15.533
+  }
+]
